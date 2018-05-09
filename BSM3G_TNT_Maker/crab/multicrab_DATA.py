@@ -34,17 +34,17 @@ if __name__ == '__main__':
                  ]
  datasetinputs = [
  # SingleElectron dataset : AT LEAST 1 high-energy electron in the event.
- '/SingleElectron/Run2017B-17Nov2017-v1/MINIAOD',
- '/SingleElectron/Run2017C-17Nov2017-v1/MINIAOD',
- '/SingleElectron/Run2017D-17Nov2017-v1/MINIAOD',
- '/SingleElectron/Run2017E-17Nov2017-v1/MINIAOD',
- '/SingleElectron/Run2017F-17Nov2017-v1/MINIAOD',
+ '/SingleElectron/Run2017B-31Mar2018-v1/MINIAOD',
+ '/SingleElectron/Run2017C-31Mar2018-v1/MINIAOD',
+ '/SingleElectron/Run2017D-31Mar2018-v1/MINIAOD',
+ '/SingleElectron/Run2017E-31Mar2018-v1/MINIAOD',
+ '/SingleElectron/Run2017F-31Mar2018-v1/MINIAOD',
  # SingleMuon dataset : AT LEAST 1 high-energy muon in the event.
- '/SingleMuon/Run2017B-17Nov2017-v1/MINIAOD',
- '/SingleMuon/Run2017C-17Nov2017-v1/MINIAOD',
- '/SingleMuon/Run2017D-17Nov2017-v1/MINIAOD',
- '/SingleMuon/Run2017E-17Nov2017-v1/MINIAOD',
- '/SingleMuon/Run2017F-17Nov2017-v1/MINIAOD',
+ '/SingleMuon/Run2017B-31Mar2018-v1/MINIAOD',
+ '/SingleMuon/Run2017C-31Mar2018-v1/MINIAOD',
+ '/SingleMuon/Run2017D-31Mar2018-v1/MINIAOD',
+ '/SingleMuon/Run2017E-31Mar2018-v1/MINIAOD',
+ '/SingleMuon/Run2017F-31Mar2018-v1/MINIAOD',
                 ]
 
 JECBlockB = [
@@ -140,11 +140,11 @@ JECBlockF = [
 
 
 goodRunsLists = [
-'/afs/cern.ch/work/b/binghuan/private/TTHLep2017/CMSSW_9_4_2/src/BSMFramework/BSM3G_TNT_Maker/data/JSON/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON.txt',
+'/afs/cern.ch/work/b/binghuan/private/TTHLep2017/CMSSW_9_4_6_patch1/src/BSMFramework/BSM3G_TNT_Maker/data/JSON/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON.txt',
 ]
 
-#for d in range(0,len(datasetnames)):
-for d in range(3,4):
+for d in range(0,len(datasetnames)):
+#for d in range(3,4):
     print 'multicrab.py: Running datasetname: ', datasetnames[d]
     JECFiles = []
     tempJSON = ''
@@ -206,7 +206,7 @@ for d in range(3,4):
     config.section_('JobType')
     config.JobType.pluginName  = 'Analysis'
     # List of parameters to pass to CMSSW parameter-set configuration file:
-    config.JobType.psetName    = '/afs/cern.ch/work/b/binghuan/private/TTHLep2017/CMSSW_9_4_2/src/BSMFramework/BSM3G_TNT_Maker/python/miniAOD_RD2017.py'
+    config.JobType.psetName    = '/afs/cern.ch/work/b/binghuan/private/TTHLep2017/CMSSW_9_4_6_patch1/src/BSMFramework/BSM3G_TNT_Maker/python/miniAOD_RD2017.py'
     config.JobType.allowUndistributedCMSSW = True
     config.JobType.sendExternalFolder = True
     ofParam = 'ofName=' + datasetnames[d]

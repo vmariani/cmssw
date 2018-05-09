@@ -171,6 +171,34 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
       }
     }
     patElectron_energyCorr.push_back(Ecorr);
+    //Corrections
+    if(el->energy()!=0) patElectron_energySF.push_back(el->userFloat("ecalTrkEnergyPostCorr")/el->energy());
+    else patElectron_energySF.push_back(1.0);
+    patElectron_ecalEnergyErrPostCorr.push_back(el->userFloat("ecalEnergyErrPostCorr"));
+    patElectron_ecalEnergyErrPreCorr.push_back(el->userFloat("ecalEnergyErrPreCorr"));
+    patElectron_ecalEnergyPostCorr.push_back(el->userFloat("ecalEnergyPostCorr"));
+    patElectron_ecalEnergyPreCorr.push_back(el->userFloat("ecalEnergyPreCorr"));
+    patElectron_ecalTrkEnergyErrPostCorr.push_back(el->userFloat("ecalTrkEnergyErrPostCorr"));
+    patElectron_ecalTrkEnergyErrPreCorr.push_back(el->userFloat("ecalTrkEnergyErrPreCorr"));
+    patElectron_ecalTrkEnergyPostCorr.push_back(el->userFloat("ecalTrkEnergyPostCorr"));
+    patElectron_ecalTrkEnergyPreCorr.push_back(el->userFloat("ecalTrkEnergyPreCorr"));
+    patElectron_energyScaleDown.push_back(el->userFloat("energyScaleDown"));
+    patElectron_energyScaleGainDown.push_back(el->userFloat("energyScaleGainDown"));
+    patElectron_energyScaleGainUp.push_back(el->userFloat("energyScaleGainUp"));
+    patElectron_energyScaleStatDown.push_back(el->userFloat("energyScaleStatDown"));
+    patElectron_energyScaleStatUp.push_back(el->userFloat("energyScaleStatUp"));
+    patElectron_energyScaleSystDown.push_back(el->userFloat("energyScaleSystDown"));
+    patElectron_energyScaleSystUp.push_back(el->userFloat("energyScaleSystUp"));
+    patElectron_energyScaleUp.push_back(el->userFloat("energyScaleUp"));
+    patElectron_energyScaleValue.push_back(el->userFloat("energyScaleValue"));
+    patElectron_energySigmaDown.push_back(el->userFloat("energySigmaDown"));
+    patElectron_energySigmaPhiDown.push_back(el->userFloat("energySigmaPhiDown"));
+    patElectron_energySigmaPhiUp.push_back(el->userFloat("energySigmaPhiUp"));
+    patElectron_energySigmaRhoDown.push_back(el->userFloat("energySigmaRhoDown"));
+    patElectron_energySigmaRhoUp.push_back(el->userFloat("energySigmaRhoUp"));
+    patElectron_energySigmaUp.push_back(el->userFloat("energySigmaUp"));
+    patElectron_energySigmaValue.push_back(el->userFloat("energySigmaValue"));
+    patElectron_energySmearNrSigma.push_back(el->userFloat("energySmearNrSigma"));
     //Charge
     patElectron_charge.push_back(el->charge());
     patElectron_isGsfCtfScPixChargeConsistent.push_back(el->isGsfCtfScPixChargeConsistent());
@@ -616,6 +644,33 @@ void ElectronPatSelector::SetBranches(){
   AddBranch(&patElectron_Et           ,"patElectron_Et");
   AddBranch(&patElectron_SCeta        ,"patElectron_SCeta");
   AddBranch(&patElectron_inCrack      ,"patElectron_inCrack");
+  //Corrections
+  AddBranch(&patElectron_energySF                , "patElectron_energySF");
+  AddBranch(&patElectron_ecalEnergyErrPostCorr   , "patElectron_ecalEnergyErrPostCorr");
+  AddBranch(&patElectron_ecalEnergyErrPreCorr    , "patElectron_ecalEnergyErrPreCorr");
+  AddBranch(&patElectron_ecalEnergyPostCorr      , "patElectron_ecalEnergyPostCorr");
+  AddBranch(&patElectron_ecalEnergyPreCorr       , "patElectron_ecalEnergyPreCorr");
+  AddBranch(&patElectron_ecalTrkEnergyErrPostCorr, "patElectron_ecalTrkEnergyErrPostCorr");
+  AddBranch(&patElectron_ecalTrkEnergyErrPreCorr , "patElectron_ecalTrkEnergyErrPreCorr");
+  AddBranch(&patElectron_ecalTrkEnergyPostCorr   , "patElectron_ecalTrkEnergyPostCorr");
+  AddBranch(&patElectron_ecalTrkEnergyPreCorr    , "patElectron_ecalTrkEnergyPreCorr");
+  AddBranch(&patElectron_energyScaleDown         , "patElectron_energyScaleDown");
+  AddBranch(&patElectron_energyScaleGainDown     , "patElectron_energyScaleGainDown");
+  AddBranch(&patElectron_energyScaleGainUp       , "patElectron_energyScaleGainUp");
+  AddBranch(&patElectron_energyScaleStatDown     , "patElectron_energyScaleStatDown");
+  AddBranch(&patElectron_energyScaleStatUp       , "patElectron_energyScaleStatUp");
+  AddBranch(&patElectron_energyScaleSystDown     , "patElectron_energyScaleSystDown");
+  AddBranch(&patElectron_energyScaleSystUp       , "patElectron_energyScaleSystUp");
+  AddBranch(&patElectron_energyScaleUp           , "patElectron_energyScaleUp");
+  AddBranch(&patElectron_energyScaleValue        , "patElectron_energyScaleValue");
+  AddBranch(&patElectron_energySigmaDown         , "patElectron_energySigmaDown");
+  AddBranch(&patElectron_energySigmaPhiDown      , "patElectron_energySigmaPhiDown");
+  AddBranch(&patElectron_energySigmaPhiUp        , "patElectron_energySigmaPhiUp");
+  AddBranch(&patElectron_energySigmaRhoDown      , "patElectron_energySigmaRhoDown");
+  AddBranch(&patElectron_energySigmaRhoUp        , "patElectron_energySigmaRhoUp");
+  AddBranch(&patElectron_energySigmaUp           , "patElectron_energySigmaUp");
+  AddBranch(&patElectron_energySigmaValue        , "patElectron_energySigmaValue");
+  AddBranch(&patElectron_energySmearNrSigma      , "patElectron_energySmearNrSigma");
   //Charge
   AddBranch(&patElectron_charge       ,"patElectron_charge");
   AddBranch(&patElectron_isGsfCtfScPixChargeConsistent            ,"patElectron_isGsfCtfScPixChargeConsistent");
@@ -797,6 +852,33 @@ void ElectronPatSelector::Clear(){
   patElectron_Et.clear();
   patElectron_SCeta.clear();
   patElectron_inCrack.clear();
+  //Corrections
+  patElectron_energySF.clear();
+  patElectron_ecalEnergyErrPostCorr.clear();
+  patElectron_ecalEnergyErrPreCorr.clear();
+  patElectron_ecalEnergyPostCorr.clear();
+  patElectron_ecalEnergyPreCorr.clear();
+  patElectron_ecalTrkEnergyErrPostCorr.clear();
+  patElectron_ecalTrkEnergyErrPreCorr.clear();
+  patElectron_ecalTrkEnergyPostCorr.clear();
+  patElectron_ecalTrkEnergyPreCorr.clear();
+  patElectron_energyScaleDown.clear();
+  patElectron_energyScaleGainDown.clear();
+  patElectron_energyScaleGainUp.clear();
+  patElectron_energyScaleStatDown.clear();
+  patElectron_energyScaleStatUp.clear();
+  patElectron_energyScaleSystDown.clear();
+  patElectron_energyScaleSystUp.clear();
+  patElectron_energyScaleUp.clear();
+  patElectron_energyScaleValue.clear();
+  patElectron_energySigmaDown.clear();
+  patElectron_energySigmaPhiDown.clear();
+  patElectron_energySigmaPhiUp.clear();
+  patElectron_energySigmaRhoDown.clear();
+  patElectron_energySigmaRhoUp.clear();
+  patElectron_energySigmaUp.clear();
+  patElectron_energySigmaValue.clear();
+  patElectron_energySmearNrSigma.clear();
   //Charge
   patElectron_charge.clear(); 
   patElectron_isGsfCtfScPixChargeConsistent.clear();

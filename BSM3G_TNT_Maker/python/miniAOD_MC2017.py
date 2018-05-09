@@ -48,36 +48,42 @@ my_id_modules = [ 'RecoEgamma.ElectronIdentification.Identification.heepElectron
                   'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V1_cff',
                   'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_HZZ_V1_cff'
                   ]
-pho_id_modules =[ 'RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Fall17_94X_V1_TrueVtx_cff',
-                  'RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Fall17_94X_V1_cff',  
-                  ]
+#pho_id_modules =[ 'RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Fall17_94X_V1_TrueVtx_cff',
+#                  'RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Fall17_94X_V1_cff',  
+#                  ]
 for idmod in my_id_modules:
     setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
-for idmod in pho_id_modules:
-    setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
+#for idmod in pho_id_modules:
+#    setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
 
 ######
 ### Electron smear and regression
 ######
-process.load('EgammaAnalysis.ElectronTools.calibratedPatElectronsRun2_cfi')
-process.load('EgammaAnalysis.ElectronTools.calibratedPatPhotonsRun2_cfi')
-process.load('Configuration.StandardSequences.Services_cff')
-process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
-                                                   slimmedElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
-                                                                                 engineName = cms.untracked.string('TRandom3'),
-                                                                                 ),
-                                                   slimmedPhotons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
-                                                                               engineName = cms.untracked.string('TRandom3'),
-                                                                               ),
-                                                   )
-process.slimmedElectrons = process.calibratedPatElectrons.clone(electrons=cms.InputTag("slimmedElectrons",processName=cms.InputTag.skipCurrentProcess()))
-process.slimmedPhotons = process.calibratedPatPhotons.clone(photons=cms.InputTag("slimmedPhotons",processName=cms.InputTag.skipCurrentProcess())) 
-process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
-process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
-process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
-process.egammaScaleSmearTask = cms.Task(process.slimmedElectrons,process.slimmedPhotons)
-process.egammaScaleSmearSeq = cms.Sequence( process.egammaScaleSmearTask)
-process.egammaScaleSmearAndVIDSeq = cms.Sequence(process.egammaScaleSmearSeq*process.egmGsfElectronIDSequence*process.egmPhotonIDSequence)
+from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
+setupEgammaPostRecoSeq(process,applyEnergyCorrections=False,
+                       applyVIDOnCorrectedEgamma=False,
+                       isMiniAOD=True)
+
+##################
+#process.load('EgammaAnalysis.ElectronTools.calibratedPatElectronsRun2_cfi')
+#process.load('EgammaAnalysis.ElectronTools.calibratedPatPhotonsRun2_cfi')
+#process.load('Configuration.StandardSequences.Services_cff')
+#process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+#                                                   slimmedElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
+#                                                                                 engineName = cms.untracked.string('TRandom3'),
+#                                                                                 ),
+#                                                   slimmedPhotons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
+#                                                                               engineName = cms.untracked.string('TRandom3'),
+#                                                                               ),
+#                                                   )
+#process.slimmedElectrons = process.calibratedPatElectrons.clone(electrons=cms.InputTag("slimmedElectrons",processName=cms.InputTag.skipCurrentProcess()))
+#process.slimmedPhotons = process.calibratedPatPhotons.clone(photons=cms.InputTag("slimmedPhotons",processName=cms.InputTag.skipCurrentProcess())) 
+#process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
+#process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
+#process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
+#process.egammaScaleSmearTask = cms.Task(process.slimmedElectrons,process.slimmedPhotons)
+#process.egammaScaleSmearSeq = cms.Sequence( process.egammaScaleSmearTask)
+#process.egammaScaleSmearAndVIDSeq = cms.Sequence(process.egammaScaleSmearSeq*process.egmGsfElectronIDSequence*process.egmPhotonIDSequence)
 
 #####
 ##   For tt+X
@@ -286,7 +292,7 @@ process.TNT = cms.EDAnalyzer("BSM3G_TNT_Maker",
   # Primary vertex cuts
   Pvtx_ndof_min   = cms.double(4.),
   Pvtx_vtx_max    = cms.double(24.),
-  Pvtx_vtxdxy_max = cms.double(24.),
+  Pvtx_vtxdxy_max = cms.double(2.),
   # Obj primary vertex cuts
   vtx_ndof_min        = cms.int32(4),
   vtx_rho_max         = cms.int32(2),
@@ -346,10 +352,11 @@ process.p = cms.Path(
 process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
 #process.regressionApplication *
 #process.calibratedPatElectrons  *
-#process.egmGsfElectronIDSequence *
-#process.electronIDValueMapProducer *
+process.electronIDValueMapProducer *
+process.egmGsfElectronIDSequence *
 #process.egmPhotonIDSequence *
-process.egammaScaleSmearAndVIDSeq *
+#process.egammaScaleSmearAndVIDSeq *
+#process.egammaPostRecoSeq *
 process.fullPatMetSequence *
 #process.puppiMETSequence *
 #process.fullPatMetSequencePuppi *

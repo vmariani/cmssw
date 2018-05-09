@@ -148,6 +148,8 @@ class ElectronPatSelector : public  baseTree{
   //Variables
   //Kinematics
   vector<double> patElectron_pt, patElectron_eta, patElectron_phi, patElectron_energy, patElectron_energyCorr, patElectron_px, patElectron_py, patElectron_pz, patElectron_p, patElectron_Et, patElectron_SCeta, patElectron_inCrack;
+  //Corrections
+  vector<double> patElectron_energySF, patElectron_ecalEnergyErrPostCorr, patElectron_ecalEnergyErrPreCorr,patElectron_ecalEnergyPostCorr, patElectron_ecalEnergyPreCorr, patElectron_ecalTrkEnergyErrPostCorr, patElectron_ecalTrkEnergyErrPreCorr, patElectron_ecalTrkEnergyPostCorr, patElectron_ecalTrkEnergyPreCorr, patElectron_energyScaleDown, patElectron_energyScaleGainDown, patElectron_energyScaleGainUp, patElectron_energyScaleStatDown, patElectron_energyScaleStatUp, patElectron_energyScaleSystDown, patElectron_energyScaleSystUp, patElectron_energyScaleUp, patElectron_energyScaleValue, patElectron_energySigmaDown, patElectron_energySigmaPhiDown, patElectron_energySigmaPhiUp, patElectron_energySigmaRhoDown, patElectron_energySigmaRhoUp, patElectron_energySigmaUp, patElectron_energySigmaValue, patElectron_energySmearNrSigma; 
   //Charge
   vector<double> patElectron_charge, patElectron_isGsfCtfScPixChargeConsistent, patElectron_isGsfScPixChargeConsistent;
   //ID
