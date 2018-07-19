@@ -6,4 +6,31 @@ Andres Florez (Los Andes), Alfredo Gurrola (Vanderbilt) and Amandeep Kalsi (Panj
 
 It has been extended and further developed by Francesco Romeo (IHEP) and Aniello Spiezia (IHEP).
 
+This version of code is used for 2017 miniAOD v2  Ntuple production:
+data: dataset=/*/Run2017*31Mar2018*/MINIAOD
+MC: dataset=/*/*12Apr2018*/MINIAODSIM
 ####################################################
+
+
+cmsrel CMSSW_9_4_9_cand2
+cd CMSSW_9_4_9_cand2/src
+cmsenv
+
+## set up Egamma Tools 
+## https://twiki.cern.ch/twiki/bin/view/CMS/EgammaMiniAODV2
+git cms-init
+git cms-merge-topic cms-egamma:EgammaPostRecoTools_940 #just adds in an extra file to have a setup function to make things easier
+scram b -j 8
+
+
+## set BSM Framework
+git clone https://github.com/BinghuanLi/BSMFramework.git
+cd BSMFramework/
+git checkout CMSSW_9_4_6_patch1
+cd ..
+scram b -j 8
+
+## To Run ##
+cd BSMFramework/BSM3G_TNT_Maker/python/
+cmsRun miniAOD_MC2017.py  # data: cmsRun miniAOD_RD2017.py
+
