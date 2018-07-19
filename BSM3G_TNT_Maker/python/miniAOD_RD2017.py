@@ -148,7 +148,7 @@ process.source = cms.Source("PoolSource",
   ),
   skipEvents = cms.untracked.uint32(0)
 )
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(30000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )
 
 ##### JEC
 from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
@@ -266,8 +266,8 @@ process.puppi.useExistingWeights = False
 #####
 options.ofName += ".root"
 process.TFileService = cms.Service("TFileService",
-  fileName = cms.string("OutTree.root")
-  #fileName = cms.string("RDOut.root")
+  #fileName = cms.string("OutTree.root")
+  fileName = cms.string("RDOut.root")
 )
 
 #####
@@ -319,7 +319,7 @@ process.TNT = cms.EDAnalyzer("BSM3G_TNT_Maker",
   fillTopSubJetinfo     = cms.bool(False), #F
   fillTauJetnessinfo    = cms.bool(False),
   fillBJetnessinfo      = cms.bool(False),
-  fillBJetnessFVinfo    = cms.bool(False),
+  fillBJetnessFVinfo    = cms.bool(True),
   fillBTagReweight      = cms.bool(False),
   fillPileupReweight    = cms.bool(True),
   fillMETinfo           = cms.bool(True),

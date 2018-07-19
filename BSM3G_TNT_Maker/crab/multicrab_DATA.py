@@ -25,12 +25,27 @@ if __name__ == '__main__':
 'Fall17V1_SEleBlockC',
 'Fall17V1_SEleBlockD',
 'Fall17V1_SEleBlockE',
-'Fall17V1_SEleBlockF',
+'Fall17V2_SEleBlockF',
 'Fall17V1_SMuBlockB',
 'Fall17V1_SMuBlockC',
 'Fall17V1_SMuBlockD',
 'Fall17V1_SMuBlockE',
-'Fall17V1_SMuBlockF',
+'Fall17V2_SMuBlockF',
+'Fall17V1_DblEGBlockB',
+'Fall17V1_DblEGBlockC',
+'Fall17V1_DblEGBlockD',
+'Fall17V1_DblEGBlockE',
+'Fall17V2_DblEGBlockF',
+'Fall17V1_DblMuBlockB',
+'Fall17V1_DblMuBlockC',
+'Fall17V1_DblMuBlockD',
+'Fall17V1_DblMuBlockE',
+'Fall17V2_DblMuBlockF',
+'Fall17V1_MuEGBlockB',
+'Fall17V1_MuEGBlockC',
+'Fall17V1_MuEGBlockD',
+'Fall17V1_MuEGBlockE',
+'Fall17V2_MuEGBlockF',
                  ]
  datasetinputs = [
  # SingleElectron dataset : AT LEAST 1 high-energy electron in the event.
@@ -45,6 +60,24 @@ if __name__ == '__main__':
  '/SingleMuon/Run2017D-31Mar2018-v1/MINIAOD',
  '/SingleMuon/Run2017E-31Mar2018-v1/MINIAOD',
  '/SingleMuon/Run2017F-31Mar2018-v1/MINIAOD',
+ # DoubleEG dataset : AT LEAST 2 high-energy electron in the event.
+ '/DoubleEG/Run2017B-31Mar2018-v1/MINIAOD',
+ '/DoubleEG/Run2017C-31Mar2018-v1/MINIAOD',
+ '/DoubleEG/Run2017D-31Mar2018-v1/MINIAOD',
+ '/DoubleEG/Run2017E-31Mar2018-v1/MINIAOD',
+ '/DoubleEG/Run2017F-31Mar2018-v1/MINIAOD',
+ # DoubleMuon dataset : AT LEAST 2 high-energy muon in the event.
+ '/DoubleMuon/Run2017B-31Mar2018-v1/MINIAOD',
+ '/DoubleMuon/Run2017C-31Mar2018-v1/MINIAOD',
+ '/DoubleMuon/Run2017D-31Mar2018-v1/MINIAOD',
+ '/DoubleMuon/Run2017E-31Mar2018-v1/MINIAOD',
+ '/DoubleMuon/Run2017F-31Mar2018-v1/MINIAOD',
+ # MuonEG dataset : AT LEAST 1 high-energy electron and 1 high-energy muon in the event.
+ '/MuonEG/Run2017B-31Mar2018-v1/MINIAOD',
+ '/MuonEG/Run2017C-31Mar2018-v1/MINIAOD',
+ '/MuonEG/Run2017D-31Mar2018-v1/MINIAOD',
+ '/MuonEG/Run2017E-31Mar2018-v1/MINIAOD',
+ '/MuonEG/Run2017F-31Mar2018-v1/MINIAOD',
                 ]
 
 JECBlockB = [
@@ -140,11 +173,14 @@ JECBlockF = [
 
 
 goodRunsLists = [
-'/afs/cern.ch/work/b/binghuan/private/TTHLep2017/CMSSW_9_4_6_patch1/src/BSMFramework/BSM3G_TNT_Maker/data/JSON/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON.txt',
+#'/afs/cern.ch/work/b/binghuan/private/TTHLep2017/CMSSW_9_4_6_patch1/src/BSMFramework/BSM3G_TNT_Maker/data/JSON/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON.txt',
+'/afs/cern.ch/work/b/binghuan/private/TTHLep2017/CMSSW_9_4_6_patch1/src/BSMFramework/BSM3G_TNT_Maker/data/JSON/Cert_294927-306462_13TeV_EOY2017ReReco_Collisions17_JSON_v1.txt',
 ]
 
-for d in range(0,len(datasetnames)):
+#for d in range(0,len(datasetnames)):
+#for d in range(10,len(datasetnames)):
 #for d in range(3,4):
+for d in [4,9,14,19,24]:
     print 'multicrab.py: Running datasetname: ', datasetnames[d]
     JECFiles = []
     tempJSON = ''
