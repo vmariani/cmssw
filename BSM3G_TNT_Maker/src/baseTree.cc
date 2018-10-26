@@ -9,6 +9,10 @@ void baseTree::AddBranch(unsigned int* x, std::string name){
   std::string brName = name;
   tree_->Branch(brName.c_str(),x,(brName+"/i").c_str());
 }
+void baseTree::AddBranch(uint64_t* x, std::string name){
+  std::string brName = name;
+  tree_->Branch(brName.c_str(),x,(brName+"/l").c_str());
+}
 void baseTree::AddBranch(int* x, std::string name){
   std::string brName = name;
   tree_->Branch(brName.c_str(),x,(brName+"/I").c_str());

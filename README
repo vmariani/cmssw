@@ -22,6 +22,13 @@ git cms-init
 git cms-merge-topic cms-egamma:EgammaPostRecoTools_940 #just adds in an extra file to have a setup function to make things easier
 scram b -j 8
 
+## set up MET corrections with EE nosie fix
+# https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription#Instructions_for_9_4_X_X_9_for_2
+# one also needs to modify the met correction in miniAOD_MC2017.py & miniAOD_RD2017.py as described above
+# this comes at August and is not tested 
+git cms-merge-topic cms-met:METFixEE2017_949_v2
+scram b -j 8
+
 
 ## set BSM Framework
 git clone https://github.com/BinghuanLi/BSMFramework.git

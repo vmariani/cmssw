@@ -26,6 +26,7 @@ class baseTree{
   void AddBranch(float* x, std::string name);
   void AddBranch(double* x, std::string name);
   void AddBranch(bool* x, std::string name);
+  void AddBranch(uint64_t* x, std::string name);
 
   void AddBranch(std::vector<int>* vec, std::string name);
   void AddBranch(std::vector<float>* vec, std::string name);

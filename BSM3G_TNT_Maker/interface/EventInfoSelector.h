@@ -122,7 +122,9 @@ class EventInfoSelector : public baseTree{
   edm::EDGetTokenT<edm::TriggerResults> metFilterBits_;
   void Initialise();
   //Event quantities
-  int EVENT_event_, EVENT_run_, EVENT_lumiBlock_;
+  uint64_t EVENT_event_;
+  //int EVENT_event_,  // we save it as int but we really should save it as uint64_t, otherwise some event number is negative in branch, 20181024
+  int EVENT_run_, EVENT_lumiBlock_;
   double EVENT_genWeight_, EVENT_genHT, EVENT_genPt;
   bool _is_data; 
   double EVENT_rhopog_, EVENT_rhotth_; 
