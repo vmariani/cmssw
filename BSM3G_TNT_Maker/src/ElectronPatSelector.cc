@@ -218,7 +218,7 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
     passMvatrigwp90Id_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wp90") );
     passMvanontrigwp90Id_.push_back( el->electronID("mvaEleID-Fall17-noIso-V1-wp80") );
     passMvatrigwpLooseId_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wpLoose") );
-    passMvanontrigwpLooseId_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wpLoose") );
+    passMvanontrigwpLooseId_.push_back( el->electronID("mvaEleID-Fall17-noIso-V1-wpLoose") );
     passMvaHZZwpLooseId_.push_back( el->electronID("mvaEleID-Spring16-HZZ-V1-wpLoose") );
     patElectron_mvaValue_HZZ_.push_back(el->userFloat("ElectronMVAEstimatorRun2Spring16HZZV1Values"));
     patElectron_mvaCategory_HZZ_.push_back(el->userInt("ElectronMVAEstimatorRun2Spring16HZZV1Categories"));
@@ -1122,14 +1122,15 @@ double ElectronPatSelector::get_isosumraw(const std::vector<const pat::PackedCan
   return isosum;
 }
 double ElectronPatSelector::get_effarea(double eta){
+  //https://github.com/cms-sw/cmssw/blob/CMSSW_10_4_X/RecoEgamma/ElectronIdentification/data/Fall17/effAreaElectrons_cone03_pfNeuHadronsAndPhotons_94X.txt
   double effarea = -1;
-  if(abs(eta) < 1.0)        effarea = 0.1566;
-  else if(abs(eta) < 1.479) effarea = 0.1626;
-  else if(abs(eta) < 2.0)   effarea = 0.1073;
-  else if(abs(eta) < 2.2)   effarea = 0.0854;
-  else if(abs(eta) < 2.3)   effarea = 0.1051;
-  else if(abs(eta) < 2.4)   effarea = 0.1204;
-  else                      effarea = 0.1524;
+  if(abs(eta) < 1.0)        effarea = 0.1440;
+  else if(abs(eta) < 1.479) effarea = 0.1562;
+  else if(abs(eta) < 2.0)   effarea = 0.1032;
+  else if(abs(eta) < 2.2)   effarea = 0.0859;
+  else if(abs(eta) < 2.3)   effarea = 0.1116;
+  else if(abs(eta) < 2.4)   effarea = 0.1321;
+  else                      effarea = 0.1654;
   return effarea;
 }
 void ElectronPatSelector::get_elejet_info(edm::View<pat::Electron>::const_iterator& ele, const edm::Event& iEvent, const edm::EventSetup& iSetup, double& elejet_l1corr, double& elejetislep,

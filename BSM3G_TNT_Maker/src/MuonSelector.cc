@@ -991,6 +991,7 @@ double MuonSelector::get_isosumraw(const std::vector<const pat::PackedCandidate 
   return isosum;
 }
 double MuonSelector::get_effarea(double eta){
+  // https://github.com/cms-data/PhysicsTools-NanoAOD/blob/master/effAreaMuons_cone03_pfNeuHadronsAndPhotons_94X.txt
   double effarea = -1;
   if(abs(eta) < 0.8)      effarea = 0.0566;
   else if(abs(eta) < 1.3) effarea = 0.0562;
