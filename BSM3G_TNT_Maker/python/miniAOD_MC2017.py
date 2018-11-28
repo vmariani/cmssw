@@ -7,11 +7,11 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = 10000
 process.load('Configuration.Geometry.GeometryRecoDB_cff')
 process.load("TrackingTools/TransientTrack/TransientTrackBuilder_cfi")
-process.load("Configuration.StandardSequences.MagneticField_38T_cff")
-#process.load("Configuration.StandardSequences.MagneticField_cff")
+process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
-process.GlobalTag.globaltag = '94X_mc2017_realistic_v14'
-process.prefer("GlobalTag")
+process.load("Geometry.CaloEventSetup.CaloTowerConstituents_cfi")
+from Configuration.AlCa.GlobalTag import GlobalTag
+process.GlobalTag.globaltag = '94X_mc2017_realistic_v13'
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 
@@ -20,11 +20,12 @@ process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 #####
 process.source = cms.Source("PoolSource",
   fileNames = cms.untracked.vstring(
-    '/store/mc/RunIIFall17MiniAODv2/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/40000/062342A0-5942-E811-826C-002590D9D8D4.root',
+    '/store/mc/RunIIFall17MiniAOD/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/20000/0CF65340-0200-E811-ABB7-0025905C53F0.root',
+    #'/store/mc/RunIIFall17MiniAODv2/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/40000/062342A0-5942-E811-826C-002590D9D8D4.root',
   ),
   skipEvents = cms.untracked.uint32(0)
 )
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 
 
 ##### JEC
@@ -35,55 +36,21 @@ updateJetCollection(
   labelName = 'UpdatedJEC',
   jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet','L2Relative','L3Absolute']), 'None')
 )
-#####
-##   ELECTRON ID SECTION
-#####
-process.load("RecoEgamma/ElectronIdentification/ElectronIDValueMapProducer_cfi")
-from PhysicsTools.SelectorUtils.tools.vid_id_tools import *
-switchOnVIDElectronIdProducer(process,DataFormat.MiniAOD)
-switchOnVIDPhotonIdProducer(process,DataFormat.MiniAOD)
-my_id_modules = [ 'RecoEgamma.ElectronIdentification.Identification.heepElectronID_HEEPV70_cff',
-                  'RecoEgamma.ElectronIdentification.Identification.cutBasedElectronID_Fall17_94X_V1_cff',
-                  'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_noIso_V1_cff', 
-                  'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Fall17_iso_V1_cff',
-                  'RecoEgamma.ElectronIdentification.Identification.mvaElectronID_Spring16_HZZ_V1_cff'
-                  ]
-#pho_id_modules =[ 'RecoEgamma.PhotonIdentification.Identification.cutBasedPhotonID_Fall17_94X_V1_TrueVtx_cff',
-#                  'RecoEgamma.PhotonIdentification.Identification.mvaPhotonID_Fall17_94X_V1_cff',  
-#                  ]
-for idmod in my_id_modules:
-    setupAllVIDIdsInModule(process,idmod,setupVIDElectronSelection)
-#for idmod in pho_id_modules:
-#    setupAllVIDIdsInModule(process,idmod,setupVIDPhotonSelection)
 
-######
-### Electron smear and regression
-######
+#####
+##   ELECTRON ID and sclale smear SECTION
+#####
 from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
-setupEgammaPostRecoSeq(process,applyEnergyCorrections=False,
-                       applyVIDOnCorrectedEgamma=False,
-                       isMiniAOD=True)
+setupEgammaPostRecoSeq(process, 
+        applyEnergyCorrections=False,
+        applyVIDOnCorrectedEgamma=False,
+        runVID=True,
+        era='2017-Nov17ReReco')
 
-##################
-#process.load('EgammaAnalysis.ElectronTools.calibratedPatElectronsRun2_cfi')
-#process.load('EgammaAnalysis.ElectronTools.calibratedPatPhotonsRun2_cfi')
-#process.load('Configuration.StandardSequences.Services_cff')
-#process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
-#                                                   slimmedElectrons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
-#                                                                                 engineName = cms.untracked.string('TRandom3'),
-#                                                                                 ),
-#                                                   slimmedPhotons  = cms.PSet( initialSeed = cms.untracked.uint32(81),
-#                                                                               engineName = cms.untracked.string('TRandom3'),
-#                                                                               ),
-#                                                   )
-#process.slimmedElectrons = process.calibratedPatElectrons.clone(electrons=cms.InputTag("slimmedElectrons",processName=cms.InputTag.skipCurrentProcess()))
-#process.slimmedPhotons = process.calibratedPatPhotons.clone(photons=cms.InputTag("slimmedPhotons",processName=cms.InputTag.skipCurrentProcess())) 
-#process.electronMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedElectrons')
-#process.photonMVAValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
-#process.photonIDValueMapProducer.srcMiniAOD = cms.InputTag('slimmedPhotons')
-#process.egammaScaleSmearTask = cms.Task(process.slimmedElectrons,process.slimmedPhotons)
-#process.egammaScaleSmearSeq = cms.Sequence( process.egammaScaleSmearTask)
-#process.egammaScaleSmearAndVIDSeq = cms.Sequence(process.egammaScaleSmearSeq*process.egmGsfElectronIDSequence*process.egmPhotonIDSequence)
+
+
+
+
 
 #####
 ##   For tt+X
@@ -117,22 +84,13 @@ na.runTauID()
 
 ############### MET Re-correct ##################
 from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
-from PhysicsTools.PatAlgos.slimming.puppiForMET_cff import makePuppiesFromMiniAOD
-makePuppiesFromMiniAOD( process, True )
-#PFMet
-runMetCorAndUncFromMiniAOD(process,
-                           isData=False
-                           )
-#Puppi MET
-runMetCorAndUncFromMiniAOD(process,
-                           isData=False,
-                           metType="Puppi",
-                           postfix="Puppi",
-                           jetFlavor="AK4PFPuppi",
-                           )
-
-process.puppiNoLep.useExistingWeights = False
-process.puppi.useExistingWeights = False
+runMetCorAndUncFromMiniAOD (
+        process,
+        isData = False, # false for MC
+        fixEE2017 = True,
+        fixEE2017Params = {'userawPt': True, 'ptThreshold':50.0, 'minEtaThreshold':2.65, 'maxEtaThreshold': 3.139} ,
+        postfix = "ModifiedMET"
+)
 
 
 #####
@@ -186,7 +144,7 @@ process.TNT = cms.EDAnalyzer("BSM3G_TNT_Maker",
   reHLT     = cms.bool(True),
   debug_    = cms.bool(False),
   super_TNT = cms.bool(False),
-  AJVar     = cms.bool(False),
+  AJVar     = cms.bool(True),
   tthlepVar = cms.bool(True),#FF
   bjetnessselfilter = cms.bool(False),
   PuppiVar  = cms.bool(False),
@@ -200,24 +158,24 @@ process.TNT = cms.EDAnalyzer("BSM3G_TNT_Maker",
   beamSpot            = cms.InputTag("offlineBeamSpot"),
   muons               = cms.InputTag("slimmedMuons"),
   patElectrons        = cms.InputTag("slimmedElectrons"),
-  electronVetoIdMap   = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-veto"),
-  electronLooseIdMap  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-loose"),
-  electronMediumIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-medium"),
-  electronTightIdMap  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-tight"),
-  eleMVATrigIdMap        = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp80"),
-  eleMVAnonTrigIdMap     = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp80"),
-  eleMVATrigwp90IdMap    = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp90"),
-  eleMVAnonTrigwp90IdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp90"),
-  eleMVATrigwpLooseIdMap    = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wpLoose"),
-  eleMVAnonTrigwpLooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wpLoose"),
-  eleHEEPIdMap                 = cms.InputTag("egmGsfElectronIDs:heepElectronID-HEEPV70"),
-  elemvaValuesMap_Trig      = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values"),
-  elemvaCategoriesMap_Trig  = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Categories"),
-  elemvaValuesMap_nonTrig         = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Values"),
-  elemvaCategoriesMap_nonTrig     = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Categories"),
-  eleMVAHZZwpLooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring16-HZZ-V1-wpLoose"),
-  elemvaValuesMap_HZZ          = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Values"),
-  elemvaCategoriesMap_HZZ      = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Categories"),
+#  electronVetoIdMap   = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-veto"),
+#  electronLooseIdMap  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-loose"),
+#  electronMediumIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-medium"),
+#  electronTightIdMap  = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Fall17-94X-V1-tight"),
+#  eleMVATrigIdMap        = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp80"),
+#  eleMVAnonTrigIdMap     = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp80"),
+#  eleMVATrigwp90IdMap    = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wp90"),
+#  eleMVAnonTrigwp90IdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wp90"),
+#  eleMVATrigwpLooseIdMap    = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-iso-V1-wpLoose"),
+#  eleMVAnonTrigwpLooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Fall17-noIso-V1-wpLoose"),
+#  eleHEEPIdMap                 = cms.InputTag("egmGsfElectronIDs:heepElectronID-HEEPV70"),
+#  elemvaValuesMap_Trig      = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Values"),
+#  elemvaCategoriesMap_Trig  = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17IsoV1Categories"),
+#  elemvaValuesMap_nonTrig         = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Values"),
+#  elemvaCategoriesMap_nonTrig     = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Fall17NoIsoV1Categories"),
+#  eleMVAHZZwpLooseIdMap = cms.InputTag("egmGsfElectronIDs:mvaEleID-Spring16-HZZ-V1-wpLoose"),
+#  elemvaValuesMap_HZZ          = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Values"),
+#  elemvaCategoriesMap_HZZ      = cms.InputTag("electronMVAValueMapProducer:ElectronMVAEstimatorRun2Spring16HZZV1Categories"),
   ebRecHits = cms.InputTag("reducedEgamma","reducedEBRecHits"),
   #taus                = cms.InputTag("slimmedTaus"),
   taus                = cms.InputTag("NewTauIDsEmbedded"),
@@ -232,15 +190,6 @@ process.TNT = cms.EDAnalyzer("BSM3G_TNT_Maker",
   photons             = cms.InputTag("slimmedPhotons"),
   packedPFCandidates  = cms.InputTag("packedPFCandidates"), 
   pruned              = cms.InputTag("prunedGenParticles"),
-  # Tau
-  #byIsolationMVArun2017v2DBoldDMwLTraw2017 = cms.string('byIsolationMVArun2017v2DBoldDMwLTraw2017'),
-  #byVVLooseIsolationMVArun2017v2DBoldDMwLT2017 = cms.string('byVVLooseIsolationMVArun2017v2DBoldDMwLT2017'),
-  #byVLooseIsolationMVArun2017v2DBoldDMwLT2017 = cms.string('byVLooseIsolationMVArun2017v2DBoldDMwLT2017'),
-  #byLooseIsolationMVArun2017v2DBoldDMwLT2017 = cms.string('byLooseIsolationMVArun2017v2DBoldDMwLT2017'),
-  #byMediumIsolationMVArun2017v2DBoldDMwLT2017 = cms.string('byMediumIsolationMVArun2017v2DBoldDMwLT2017'),
-  #byTightIsolationMVArun2017v2DBoldDMwLT2017 = cms.string('byTightIsolationMVArun2017v2DBoldDMwLT2017'),
-  #byVTightIsolationMVArun2017v2DBoldDMwLT2017 = cms.string('byVTightIsolationMVArun2017v2DBoldDMwLT2017'),
-  #byVVTightIsolationMVArun2017v2DBoldDMwLT2017 = cms.string('byVVTightIsolationMVArun2017v2DBoldDMwLT2017'),
   # JER
   jerAK4PFchs     =  cms.FileInPath("BSMFramework/BSM3G_TNT_Maker/data/JER/Spring16_25nsV10_MC_PtResolution_AK4PFchs.txt"),
   jerAK4PFchsSF   =  cms.FileInPath("BSMFramework/BSM3G_TNT_Maker/data/JER/Spring16_25nsV10_MC_SF_AK4PFchs.txt"),
@@ -352,12 +301,12 @@ process.p = cms.Path(
 process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
 #process.regressionApplication *
 #process.calibratedPatElectrons  *
-process.electronIDValueMapProducer *
-process.egmGsfElectronIDSequence *
+#process.electronIDValueMapProducer *
+#process.egmGsfElectronIDSequence *
 #process.egmPhotonIDSequence *
 #process.egammaScaleSmearAndVIDSeq *
-#process.egammaPostRecoSeq *
-process.fullPatMetSequence *
+process.egammaPostRecoSeq *
+process.fullPatMetSequenceModifiedMET *
 #process.puppiMETSequence *
 #process.fullPatMetSequencePuppi *
 process.QGTagger *

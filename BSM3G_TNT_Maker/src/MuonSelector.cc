@@ -345,6 +345,7 @@ void MuonSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       Muon_jetdr.push_back(mujet_mindr);
       Muon_jetl1corr.push_back(mujet_l1corr);
       Muon_jetislep.push_back(mujetislep);
+      Muon_jetidx.push_back(lepjetidx);
       if(mujet_pt<0){
           mujet_pt = 0;
           muptOVmujetpt=1;
@@ -654,6 +655,7 @@ void MuonSelector::SetBranches(){
     AddBranch(&Muon_jetdr             ,"Muon_jetdr");
     AddBranch(&Muon_jetl1corr         ,"Muon_jetl1corr");
     AddBranch(&Muon_jetislep         ,"Muon_jetislep");
+    AddBranch(&Muon_jetidx         ,"Muon_jetidx");
     AddBranch(&Muon_jetpt             ,"Muon_jetpt");
     AddBranch(&Muon_jetptratio        ,"Muon_jetptratio");
     AddBranch(&Muon_jetptratioV2        ,"Muon_jetptratioV2");
@@ -835,6 +837,7 @@ void MuonSelector::Clear(){
     Muon_jetdr.clear();
     Muon_jetl1corr.clear();
     Muon_jetislep.clear();
+    Muon_jetidx.clear();
     Muon_jetpt.clear();
     Muon_jetptratio.clear();
     Muon_jetptratioV2.clear();
@@ -1006,6 +1009,7 @@ void MuonSelector::get_mujet_info(const pat::Muon& mu, const edm::Event& iEvent,
   iEvent.getByToken(jets_, jets);
   pat::Jet mujet;
   int currjetpos = 0;
+  //std::cout<<iEvent.id().event()  <<" Muon pt "<< mu.pt() <<  std::endl;
   for(const pat::Jet &j : *jets){
     pat::Jet jet = j;
     double dr = deltaR(mu.p4(),jet.p4());
@@ -1017,6 +1021,7 @@ void MuonSelector::get_mujet_info(const pat::Muon& mu, const edm::Event& iEvent,
       lepjetidx = currjetpos;
     }
     */
+    //std::cout<<" jetp4 "<< jet.pt() <<"/"<<jet.eta() << "/"<< jet.phi()<< std::endl;
     for(unsigned int i1 = 0 ; i1 < mu.numberOfSourceCandidatePtrs();i1++){
         const reco::CandidatePtr  &c1s=mu.sourceCandidatePtr(i1);
         for(unsigned int i2 = 0 ; i2 < jet.numberOfSourceCandidatePtrs();i2++) {
@@ -1025,6 +1030,7 @@ void MuonSelector::get_mujet_info(const pat::Muon& mu, const edm::Event& iEvent,
                 mujet = jet;
                 mujet_mindr = dr;
                 lepjetidx = currjetpos;
+                //std::cout<<" mujetidx "<< lepjetidx << " mujetp4 "<< mujet.pt() <<"/"<<mujet.eta() << "/"<< mujet.phi()<< std::endl;
             }
         }
     }

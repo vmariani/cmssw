@@ -169,6 +169,7 @@ class MuonSelector : public  baseTree{
   vector<double> Muon_jetdr, Muon_jetpt, Muon_jetptratio, Muon_jetcsv, Muon_ptrel, Muon_IP3Dsig_it, Muon_jetdeepcsv, Muon_jetptratioV2;
   vector<double> Muon_jetl1corr;
   vector<double> Muon_jetislep;
+  vector<int> Muon_jetidx;
   vector<double> Muon_pvass, Muon_etarel, Muon_ptOVen, Muon_mujet_pfJetProbabilityBJetTag, Muon_mujet_pfCombinedMVABJetTags, Muon_mujet_qgl;
   vector<double> Muon_mumass, Muon_mujet_mass, Muon_mujet_Wmass, Muon_mujet_Topmass, Muon_mujet_WTopmass;
   vector<double> Muon_IP3D_val, Muon_IP3D_err, Muon_IP3D_sig, Muon_IP2D_val, Muon_IP2D_err, Muon_IP2D_sig, Muon_sIP3D_val, Muon_sIP3D_err, Muon_sIP3D_sig, Muon_sIP2D_val, Muon_sIP2D_err, Muon_sIP2D_sig, Muon_IP1D_val, Muon_IP1D_err, Muon_IP1D_sig, Muon_sIP1D_val, Muon_sIP1D_err, Muon_sIP1D_sig;

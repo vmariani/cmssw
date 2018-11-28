@@ -6,14 +6,12 @@ Andres Florez (Los Andes), Alfredo Gurrola (Vanderbilt) and Amandeep Kalsi (Panj
 
 It has been extended and further developed by Francesco Romeo (IHEP) and Aniello Spiezia (IHEP).
 
-This version of code is used for 2017 miniAOD v2  Ntuple production:
-data: dataset=/*/Run2017*31Mar2018*/MINIAOD
-MC: dataset=/*/*12Apr2018*/MINIAODSIM
+This version of code is used for 2017 miniAOD v2 and v1  Ntuple production:
 ####################################################
 
 
-cmsrel CMSSW_9_4_9_cand2
-cd CMSSW_9_4_9_cand2/src
+cmsrel CMSSW_9_4_10
+cd CMSSW_9_4_10/src
 cmsenv
 
 ## set up Egamma Tools 
@@ -24,8 +22,6 @@ scram b -j 8
 
 ## set up MET corrections with EE nosie fix
 # https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription#Instructions_for_9_4_X_X_9_for_2
-# one also needs to modify the met correction in miniAOD_MC2017.py & miniAOD_RD2017.py as described above
-# this comes at August and is not tested 
 git cms-merge-topic cms-met:METFixEE2017_949_v2
 scram b -j 8
 
@@ -33,11 +29,12 @@ scram b -j 8
 ## set BSM Framework
 git clone https://github.com/BinghuanLi/BSMFramework.git
 cd BSMFramework/
-git checkout CMSSW_9_4_6_patch1
+git checkout CMSSW_9_4_10
 cd ..
 scram b -j 8
 
 ## To Run ##
 cd BSMFramework/BSM3G_TNT_Maker/python/
-cmsRun miniAOD_MC2017.py  # data: cmsRun miniAOD_RD2017.py
+cmsRun miniAOD_MC2017.py # Update v1 to v2 EgammaTools fixes, makes electron smeraing and ID access easier
+#data: cmsRun miniAOD_RD2017.py(not updated yet)  FIXME
 

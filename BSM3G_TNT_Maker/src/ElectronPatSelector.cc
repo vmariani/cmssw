@@ -1,6 +1,7 @@
 #include "BSMFramework/BSM3G_TNT_Maker/interface/ElectronPatSelector.h"
 ElectronPatSelector::ElectronPatSelector(std::string name, TTree* tree, bool debug, const pset& iConfig, edm::ConsumesCollector && ic): 
   baseTree(name,tree,debug),
+  /*
   electronVetoIdMapToken_(ic.consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("electronVetoIdMap"))),
   electronLooseIdMapToken_(ic.consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("electronLooseIdMap"))),
   electronMediumIdMapToken_(ic.consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("electronMediumIdMap"))),
@@ -19,6 +20,7 @@ ElectronPatSelector::ElectronPatSelector(std::string name, TTree* tree, bool deb
   elemvaCategoriesMapToken_Trig_(ic.consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("elemvaCategoriesMap_Trig"))),
   elemvaValuesMapToken_HZZ_(ic.consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("elemvaValuesMap_HZZ"))),
   elemvaCategoriesMapToken_HZZ_(ic.consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("elemvaCategoriesMap_HZZ"))),
+  */
   triggerBits_(ic.consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("bits"))),
   triggerObjects_(ic.consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("objects"))),
   ebRecHitsToken_(ic.consumes<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>>>(iConfig.getParameter<edm::InputTag>("ebRecHits")))
@@ -89,6 +91,7 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
   edm::ESHandle<TransientTrackBuilder> ttrkbuilder;
   iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder",ttrkbuilder);
   iEvent.getByToken(ebRecHitsToken_, _ebRecHits);
+  /*
   edm::Handle<edm::ValueMap<bool>  > veto_id_decisions;
   edm::Handle<edm::ValueMap<bool>  > loose_id_decisions;
   edm::Handle<edm::ValueMap<bool>  > medium_id_decisions;
@@ -125,6 +128,7 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
   iEvent.getByToken(eleMVAHZZwpLooseIdMap_,      mvahzzwploose_id_decisions);
   iEvent.getByToken(elemvaValuesMapToken_HZZ_,     elemvaValues_HZZ);
   iEvent.getByToken(elemvaCategoriesMapToken_HZZ_, elemvaCategories_HZZ);
+  */
   /////
   //   Require a good vertex 
   /////
@@ -204,47 +208,30 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
     patElectron_isGsfCtfScPixChargeConsistent.push_back(el->isGsfCtfScPixChargeConsistent());
     patElectron_isGsfScPixChargeConsistent.push_back(el->isGsfScPixChargeConsistent());
     //ID
-    const Ptr<pat::Electron> elPtr(electron_pat, el - electron_pat->begin() );
-    bool isPassVeto    = (*veto_id_decisions)  [ elPtr ];
-    bool isPassLoose   = (*loose_id_decisions) [ elPtr ];
-    bool isPassMedium  = (*medium_id_decisions)[ elPtr ];
-    bool isPassTight   = (*tight_id_decisions) [ elPtr ];
-    bool isPassMvatrig        = (*mvatrig_id_decisions) [ elPtr ];
-    bool isPassMvanontrig     = (*mvanontrig_id_decisions) [ elPtr ];
-    bool isPassMvatrigwp90    = (*mvatrigwp90_id_decisions) [ elPtr ];
-    bool isPassMvanontrigwp90 = (*mvanontrigwp90_id_decisions) [ elPtr ];
-    bool isPassMvatrigwpLoose    = (*mvatrigwpLoose_id_decisions) [ elPtr ];
-    bool isPassMvanontrigwpLoose = (*mvanontrigwpLoose_id_decisions) [ elPtr ];
-    bool isPassMvahzzwploose    = (*mvahzzwploose_id_decisions) [ elPtr ];
-    bool isHEEPId      = (*heep_id_decisions)  [ elPtr ];
-    float mvaval_nonTrig  = (*elemvaValues_nonTrig)[ elPtr ];
-    float mvacat_nonTrig  = (*elemvaCategories_nonTrig)[ elPtr ];
-    float mvaval_Trig     = (*elemvaValues_Trig)[ elPtr ];
-    float mvacat_Trig     = (*elemvaCategories_Trig)[ elPtr ];
-    float mvaval_HZZ  = (*elemvaValues_HZZ)[ elPtr ];
-    float mvacat_HZZ  = (*elemvaCategories_HZZ)[ elPtr ];
-    passVetoId_.push_back  ( isPassVeto   );
-    passLooseId_.push_back ( isPassLoose  );
-    passMediumId_.push_back( isPassMedium );
-    passTightId_.push_back ( isPassTight  );
-    passMvatrigId_.push_back( isPassMvatrig );
-    passMvanontrigId_.push_back( isPassMvanontrig );
-    passMvatrigwp90Id_.push_back( isPassMvatrigwp90 );
-    passMvanontrigwp90Id_.push_back( isPassMvanontrigwp90 );
-    passMvatrigwpLooseId_.push_back( isPassMvatrigwpLoose );
-    passMvanontrigwpLooseId_.push_back( isPassMvanontrigwpLoose );
-    passMvaHZZwpLooseId_.push_back( isPassMvahzzwploose );
-    patElectron_mvaValue_HZZ_.push_back(mvaval_HZZ);
-    patElectron_mvaCategory_HZZ_.push_back(mvacat_HZZ);
-    passHEEPId_.push_back  ( isHEEPId     );   
-    patElectron_mvaValue_nonTrig_.push_back(mvaval_nonTrig);
-    patElectron_mvaCategory_nonTrig_.push_back(mvacat_nonTrig);
-    patElectron_mvaValue_Trig_.push_back(mvaval_Trig);
-    patElectron_mvaCategory_Trig_.push_back(mvacat_Trig);
+    float mvaval_nonTrig  = el->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV1Values");
+    passVetoId_.push_back  ( el->electronID("cutBasedElectronID-Fall17-94X-V1-veto"));
+    passLooseId_.push_back ( el->electronID("cutBasedElectronID-Fall17-94X-V1-loose"));
+    passMediumId_.push_back( el->electronID("cutBasedElectronID-Fall17-94X-V1-medium"));
+    passTightId_.push_back ( el->electronID("cutBasedElectronID-Fall17-94X-V1-tight"));
+    passMvatrigId_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wp80") );
+    passMvanontrigId_.push_back( el->electronID("mvaEleID-Fall17-noIso-V1-wp80") );
+    passMvatrigwp90Id_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wp90") );
+    passMvanontrigwp90Id_.push_back( el->electronID("mvaEleID-Fall17-noIso-V1-wp80") );
+    passMvatrigwpLooseId_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wpLoose") );
+    passMvanontrigwpLooseId_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wpLoose") );
+    passMvaHZZwpLooseId_.push_back( el->electronID("mvaEleID-Spring16-HZZ-V1-wpLoose") );
+    patElectron_mvaValue_HZZ_.push_back(el->userFloat("ElectronMVAEstimatorRun2Spring16HZZV1Values"));
+    patElectron_mvaCategory_HZZ_.push_back(el->userInt("ElectronMVAEstimatorRun2Spring16HZZV1Categories"));
+    passHEEPId_.push_back  (el->electronID("heepElectronID-HEEPV70"));   
+    patElectron_mvaValue_nonTrig_.push_back(el->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV1Values"));
+    patElectron_mvaCategory_nonTrig_.push_back(el->userInt("ElectronMVAEstimatorRun2Fall17NoIsoV1Categories"));
+    patElectron_mvaValue_Trig_.push_back(el->userFloat("ElectronMVAEstimatorRun2Fall17IsoV1Values"));
+    patElectron_mvaCategory_Trig_.push_back(el->userInt("ElectronMVAEstimatorRun2Fall17IsoV1Categories"));
     patElectron_pdgId.push_back(el->pdgId());
     patElectron_isEcalDriven.push_back(el->ecalDriven());
     //Isolation
     //reco::GsfElectron::PflowIsolationVariables pfIso = el->pfIsolationVariables();
+    //double SumChHadPt       = el->chargedHadronIsoR(0.4);
     double SumChHadPt       = el->pfIsolationVariables().sumChargedHadronPt;
     double SumNeuHadEt      = el->pfIsolationVariables().sumNeutralHadronEt;
     double SumPhotonEt      = el->pfIsolationVariables().sumPhotonEt; 
@@ -257,8 +244,12 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
     double relIsoDeltaBeta = (SumChHadPt + SumNeutralCorrEt)/el->pt();
     patElectron_relIsoDeltaBeta.push_back(relIsoDeltaBeta);
     double EffArea = get_effarea(el->superCluster()->position().eta());
-    SumNeutralCorrEt = std::max( 0.0, SumNeuHadEt+SumPhotonEt - rhopog*EffArea );
-    double relIsoRhoEA = (SumChHadPt + SumNeutralCorrEt)/el->pt();
+    double SumChHadPt04       = el->chargedHadronIso();
+    double SumNeuHadEt04      = el->neutralHadronIso();
+    double SumPhotonEt04      = el->photonIso(); 
+    //double SumPU04            = el->puChargedHadronIso();
+    SumNeutralCorrEt = std::max( 0.0, SumNeuHadEt04+SumPhotonEt04 - rhopog*EffArea*16./9. );
+    double relIsoRhoEA = (SumChHadPt04 + SumNeutralCorrEt)/el->pt();
     patElectron_relIsoRhoEA.push_back(relIsoRhoEA);
     patElectron_dr03EcalRecHitSumEt.push_back(el->dr03EcalRecHitSumEt());
     patElectron_dr03HcalDepth1TowerSumEt.push_back(el->dr03HcalDepth1TowerSumEt());
@@ -294,8 +285,8 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
     }
     //IP
     if(el->gsfTrack().isNonnull()){
-      patElectron_gsfTrack_dz_pv.push_back(fabs(el->gsfTrack()->dz(firstGoodVertex.position())));
-      patElectron_gsfTrack_dxy_pv.push_back(fabs(el->gsfTrack()->dxy(firstGoodVertex.position())));
+      patElectron_gsfTrack_dz_pv.push_back(el->gsfTrack()->dz(firstGoodVertex.position()));
+      patElectron_gsfTrack_dxy_pv.push_back(el->gsfTrack()->dxy(firstGoodVertex.position()));
       patElectron_d0.push_back((-1) * el->gsfTrack()->dxy(firstGoodVertex.position()));
       patElectron_dzError.push_back(el->gsfTrack()->dzError());
       patElectron_dxyError.push_back(el->gsfTrack()->d0Error());
@@ -412,6 +403,7 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
       patElectron_jetdr.push_back(elejet_mindr);
       patElectron_jetl1corr.push_back(elejet_l1corr);
       patElectron_jetislep.push_back(elejetislep);
+      patElectron_jetidx.push_back(lepjetidx);
       if(elejet_pt<0){
           elejet_pt = 0;
           eleptOVelejetpt=1;
@@ -755,6 +747,7 @@ void ElectronPatSelector::SetBranches(){
     AddBranch(&patElectron_jetdr                        ,"patElectron_jetdr");
     AddBranch(&patElectron_jetl1corr                        ,"patElectron_jetl1corr");
     AddBranch(&patElectron_jetislep                        ,"patElectron_jetislep");
+    AddBranch(&patElectron_jetidx                        ,"patElectron_jetidx");
     AddBranch(&patElectron_jetpt                        ,"patElectron_jetpt");
     AddBranch(&patElectron_jetptratio                   ,"patElectron_jetptratio");
     AddBranch(&patElectron_jetptratioV2                   ,"patElectron_jetptratioV2");
@@ -962,6 +955,7 @@ void ElectronPatSelector::Clear(){
     patElectron_jetdr.clear();
     patElectron_jetl1corr.clear();
     patElectron_jetislep.clear();
+    patElectron_jetidx.clear();
     patElectron_jetpt.clear();
     patElectron_jetptratio.clear();
     patElectron_jetptratioV2.clear();

@@ -111,6 +111,7 @@ class ElectronPatSelector : public  baseTree{
   edm::EDGetTokenT<edm::ValueMap<float> > qgToken;
   edm::EDGetTokenT<double> rhopogHandle_;
   //edm::EDGetTokenT<double> rhotthHandle_;
+  /*
   edm::EDGetTokenT<edm::ValueMap<bool>  > electronVetoIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool>  > electronLooseIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool>  > electronMediumIdMapToken_;
@@ -129,6 +130,7 @@ class ElectronPatSelector : public  baseTree{
   edm::EDGetTokenT<edm::ValueMap<int>   > elemvaCategoriesMapToken_Trig_;
   edm::EDGetTokenT<edm::ValueMap<float> > elemvaValuesMapToken_HZZ_;
   edm::EDGetTokenT<edm::ValueMap<int>   > elemvaCategoriesMapToken_HZZ_;
+  */
   edm::EDGetTokenT<edm::TriggerResults> triggerBits_;
   edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> triggerObjects_;
   edm::EDGetTokenT<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>>> ebRecHitsToken_;
@@ -203,6 +205,7 @@ class ElectronPatSelector : public  baseTree{
   vector<double> patElectron_jetdr, patElectron_jetpt, patElectron_jetptratio, patElectron_jetcsv, patElectron_ptrel, patElectron_IP3Dsig, patElectron_eleMVASpring15NonTrig25ns, patElectron_eleMVASpring15NonTrig25ns_VL, patElectron_jetdeepcsv, patElectron_jetptratioV2;
   vector<double> patElectron_jetl1corr;
   vector<double> patElectron_jetislep;
+  vector<int> patElectron_jetidx;
   vector<double> patElectron_pvass, patElectron_etarel, patElectron_ptOVen, patElectron_elejet_pfJetProbabilityBJetTag, patElectron_elejet_pfCombinedMVABJetTags, patElectron_elejet_qgl;
   vector<double> patElectron_elemass, patElectron_elejet_mass, patElectron_elejet_Wmass, patElectron_elejet_Topmass, patElectron_elejet_WTopmass;
   vector<double> patElectron_IP3D_val, patElectron_IP3D_err, patElectron_IP3D_sig, patElectron_IP2D_val, patElectron_IP2D_err, patElectron_IP2D_sig, patElectron_sIP3D_val, patElectron_sIP3D_err, patElectron_sIP3D_sig, patElectron_sIP2D_val, patElectron_sIP2D_err, patElectron_sIP2D_sig, patElectron_IP1D_val, patElectron_IP1D_err, patElectron_IP1D_sig, patElectron_sIP1D_val, patElectron_sIP1D_err, patElectron_sIP1D_sig;
