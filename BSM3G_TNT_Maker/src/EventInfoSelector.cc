@@ -38,8 +38,11 @@ void EventInfoSelector::Fill(const edm::Event& iEvent){
     if(lheEventProduct.isValid()){
       EVENT_originalXWGTUP_ = lheEventProduct->originalXWGTUP();
       for (unsigned int i=0; i<lheEventProduct->weights().size(); i++){
-	EVENT_genWeights_.push_back(lheEventProduct->weights()[i].wgt);
+	  // save only first 10 intersted weights
+      // https://twiki.cern.ch/twiki/bin/view/Main/TheoreticalUncertainty#Weight
+     if(i<10) EVENT_genWeights_.push_back(lheEventProduct->weights()[i].wgt);
 	//Q2 for ttHbb synchronization
+    //we may missing some LHE weights for THQ/THW, please check FIXME
 	if (lheEventProduct->weights()[i].id == "1005") EVENT_Q2tthbbWeightUp_   = lheEventProduct->weights()[i].wgt/lheEventProduct->originalXWGTUP(); 
 	if (lheEventProduct->weights()[i].id == "1009") EVENT_Q2tthbbWeightDown_ = lheEventProduct->weights()[i].wgt/lheEventProduct->originalXWGTUP(); 
       }

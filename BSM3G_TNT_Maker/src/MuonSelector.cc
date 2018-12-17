@@ -152,11 +152,16 @@ void MuonSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     //Charge
     Muon_charge.push_back(mu->charge());
     //ID
-    Muon_soft.push_back(mu->isSoftMuon(firstGoodVertex));
-    Muon_loose.push_back(mu->isLooseMuon());
-    Muon_medium.push_back(mu->isMediumMuon());
-    Muon_tight.push_back(mu->isTightMuon(firstGoodVertex));
-    Muon_isHighPt.push_back(mu->isHighPtMuon(firstGoodVertex));
+    Muon_soft.push_back(mu->passed(reco::Muon::SoftCutBasedId));
+    Muon_loose.push_back(mu->passed(reco::Muon::CutBasedIdLoose));
+    Muon_medium.push_back(mu->passed(reco::Muon::CutBasedIdMedium));
+    Muon_tight.push_back(mu->passed(reco::Muon::CutBasedIdTight));
+    Muon_isHighPt.push_back(mu->passed(reco::Muon::CutBasedIdGlobalHighPt));
+    Muon_isTrkHighPt.push_back(mu->passed(reco::Muon::CutBasedIdTrkHighPt));
+    Muon_TrkIsoLoose.push_back(mu->passed(reco::Muon::TkIsoLoose));
+    Muon_TrkIsoTight.push_back(mu->passed(reco::Muon::TkIsoTight));
+    //Muon_TrigLoose.push_back(mu->passed(reco::Muon::TriggerIdLoose));
+    Muon_TrigLoose.push_back(-999); // robust HLT Trigger, valid since 10X
     Muon_POGisGood.push_back(muon::isGoodMuon(*mu, muon::TMOneStationTight));
     Muon_pdgId.push_back(mu->pdgId());
     Muon_pf.push_back(mu->isPFMuon());   
@@ -298,8 +303,8 @@ void MuonSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	Muon_trackFitErrorMatrix_22.push_back(-999);
       }
       if(mu->muonBestTrack().isNonnull()){
-	Muon_dz_bt.push_back(fabs(mu->muonBestTrack()->dz(firstGoodVertex.position())));
-	Muon_dxy_bt.push_back(fabs(mu->muonBestTrack()->dxy(firstGoodVertex.position())));
+	Muon_dz_bt.push_back(mu->muonBestTrack()->dz(firstGoodVertex.position()));
+	Muon_dxy_bt.push_back(mu->muonBestTrack()->dxy(firstGoodVertex.position()));
       }else{
 	Muon_dz_bt.push_back(-999);
 	Muon_dxy_bt.push_back(-999);
@@ -581,6 +586,10 @@ void MuonSelector::SetBranches(){
   AddBranch(&Muon_medium             ,"Muon_medium");
   AddBranch(&Muon_tight              ,"Muon_tight");
   AddBranch(&Muon_isHighPt           ,"Muon_isHighPt");
+  AddBranch(&Muon_isTrkHighPt        ,"Muon_isTrkHighPt");
+  AddBranch(&Muon_TrkIsoLoose        ,"Muon_TrkIsoLoose");
+  AddBranch(&Muon_TrkIsoTight        ,"Muon_TrkIsoTight");
+  AddBranch(&Muon_TrigLoose          ,"Muon_TrigLoose");
   AddBranch(&Muon_POGisGood          ,"Muon_POGisGood");
   AddBranch(&Muon_pdgId              ,"Muon_pdgId");
   AddBranch(&Muon_pf                 ,"Muon_pf");
@@ -763,6 +772,10 @@ void MuonSelector::Clear(){
   Muon_medium.clear();
   Muon_tight.clear();
   Muon_isHighPt.clear();
+  Muon_isTrkHighPt.clear();
+  Muon_TrkIsoLoose.clear();
+  Muon_TrkIsoTight.clear();
+  Muon_TrigLoose.clear();
   Muon_POGisGood.clear();
   Muon_pdgId.clear();
   Muon_pf.clear();   
