@@ -12,12 +12,19 @@
 #include <sstream>      // std::stringstream, std::stringbuf
 BSM3G_TNT_Maker::BSM3G_TNT_Maker(const edm::ParameterSet& iConfig):
   triggerBits_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("bits"))),
+  muon_h_(consumes<edm::View<pat::Muon> >(iConfig.getParameter<edm::InputTag>("muons"))),
+  electron_pat_(consumes<edm::View<pat::Electron> >(iConfig.getParameter<edm::InputTag>("patElectrons"))),
   //now do what ever initialization is needed
   MaxN(200)
 {
+  _Muon_pt_min        = iConfig.getParameter<double>("Muon_pt_min");
+  _Muon_eta_max       = iConfig.getParameter<double>("Muon_eta_max");
+  _patElectron_pt_min  = iConfig.getParameter<double>("patElectron_pt_min");
+  _patElectron_eta_max = iConfig.getParameter<double>("patElectron_eta_max");
   debug_                 = iConfig.getParameter<bool>("debug_");
   bjetnessselfilter      = iConfig.getParameter<bool>("bjetnessselfilter");
   _is_data               = iConfig.getParameter<bool>("is_data");
+  _tthlepfilter          = iConfig.getParameter<bool>("tthlepfilter");
   _ifevtriggers          = iConfig.getParameter<bool>("ifevtriggers"); 
   _evtriggers            = iConfig.getParameter<vector<string> >("evtriggers");
   _fillgeninfo           = iConfig.getParameter<bool>("fillgeninfo"); 
@@ -80,7 +87,11 @@ void BSM3G_TNT_Maker::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   using namespace edm;
   using namespace pat;
   using namespace reco;
-  //Event info for all the events you read
+  // Recall collections
+  edm::Handle<edm::View<pat::Muon> > muon_h;
+  iEvent.getByToken(muon_h_, muon_h);
+  edm::Handle<edm::View<pat::Electron> > electron_pat;
+  iEvent.getByToken(electron_pat_, electron_pat);
   eventnum = -1;
   eventnum = iEvent.id().event();
   eventnumnegative = 1;
@@ -105,8 +116,34 @@ void BSM3G_TNT_Maker::analyze(const edm::Event& iEvent, const edm::EventSetup& i
       }
     }
   }
+  //Require at least two leptons on the event
+  Bool_t pass_nlep = false;
+  if(_tthlepfilter){
+    Int_t n_lep = 0;
+    for(edm::View<pat::Muon>::const_iterator mu = muon_h->begin(); mu != muon_h->end(); mu++){
+        if(mu->pt() < _Muon_pt_min)         continue;
+        if(fabs(mu->eta()) > _Muon_eta_max) continue;  
+        if(mu->passed(reco::Muon::CutBasedIdLoose) <0.5) continue;
+        n_lep++;
+        //std::cout<< " EventNumber " << eventnum << " n_lep in mu " << n_lep << std::endl;
+        if(n_lep >=2){
+            pass_nlep = true;
+            break;
+        }
+    }
+    for(edm::View<pat::Electron>::const_iterator el = electron_pat->begin(); el != electron_pat->end(); el++){
+        if(el->pt() < _patElectron_pt_min)         continue;
+        if(fabs(el->eta()) > _patElectron_eta_max) continue;  
+        n_lep++;
+        //std::cout<< " EventNumber " << eventnum << " n_lep in ele " << n_lep << std::endl;
+        if(n_lep >=2){
+            pass_nlep = true;
+            break;
+        }
+    }
+  }
   //Call classes
-  if((_ifevtriggers && evtriggered) || !_ifevtriggers){
+  if(((_ifevtriggers && evtriggered) || !_ifevtriggers) && ((_tthlepfilter && pass_nlep) || !_tthlepfilter)){
     bjetnesssel_filter = 0;
     if(_fillBJetnessinfo)      BJetnessselector->Fill(iEvent, iSetup, bjetnesssel_filter);
     if((bjetnessselfilter && bjetnesssel_filter==1) || !bjetnessselfilter){

@@ -88,6 +88,14 @@ class BSM3G_TNT_Maker : public edm::EDAnalyzer {
   bool _fillPileupReweight;
   bool _fillMETinfo;
   bool _fillphotoninfo;
+  // Config relates to nlep filter
+  bool _tthlepfilter;
+  double _Muon_pt_min;
+  double _Muon_eta_max;
+  double _patElectron_pt_min;
+  double _patElectron_eta_max;
+  edm::EDGetTokenT<edm::View<pat::Muon> > muon_h_;
+  edm::EDGetTokenT<edm::View<pat::Electron> > electron_pat_;
   /////
   //   All 
   /////
