@@ -1,26 +1,6 @@
 #include "BSMFramework/BSM3G_TNT_Maker/interface/ElectronPatSelector.h"
 ElectronPatSelector::ElectronPatSelector(std::string name, TTree* tree, bool debug, const pset& iConfig, edm::ConsumesCollector && ic): 
   baseTree(name,tree,debug),
-  /*
-  electronVetoIdMapToken_(ic.consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("electronVetoIdMap"))),
-  electronLooseIdMapToken_(ic.consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("electronLooseIdMap"))),
-  electronMediumIdMapToken_(ic.consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("electronMediumIdMap"))),
-  electronTightIdMapToken_(ic.consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("electronTightIdMap"))),
-  eleMVATrigIdMapToken_(ic.consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVATrigIdMap"))),
-  eleMVAnonTrigIdMap_(ic.consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVAnonTrigIdMap"))),
-  eleMVATrigwp90IdMap_(ic.consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVATrigwp90IdMap"))),
-  eleMVAnonTrigwp90IdMap_(ic.consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVAnonTrigwp90IdMap"))),
-  eleMVATrigwpLooseIdMap_(ic.consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVATrigwpLooseIdMap"))),
-  eleMVAnonTrigwpLooseIdMap_(ic.consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVAnonTrigwpLooseIdMap"))),
-  eleHEEPIdMapToken_(ic.consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleHEEPIdMap"))),
-  eleMVAHZZwpLooseIdMap_(ic.consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMVAHZZwpLooseIdMap"))),
-  elemvaValuesMapToken_nonTrig_(ic.consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("elemvaValuesMap_nonTrig"))),
-  elemvaCategoriesMapToken_nonTrig_(ic.consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("elemvaCategoriesMap_nonTrig"))),
-  elemvaValuesMapToken_Trig_(ic.consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("elemvaValuesMap_Trig"))),
-  elemvaCategoriesMapToken_Trig_(ic.consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("elemvaCategoriesMap_Trig"))),
-  elemvaValuesMapToken_HZZ_(ic.consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("elemvaValuesMap_HZZ"))),
-  elemvaCategoriesMapToken_HZZ_(ic.consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("elemvaCategoriesMap_HZZ"))),
-  */
   triggerBits_(ic.consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("bits"))),
   triggerObjects_(ic.consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>("objects"))),
   ebRecHitsToken_(ic.consumes<edm::SortedCollection<EcalRecHit,edm::StrictWeakOrdering<EcalRecHit>>>(iConfig.getParameter<edm::InputTag>("ebRecHits")))
@@ -33,7 +13,6 @@ ElectronPatSelector::ElectronPatSelector(std::string name, TTree* tree, bool deb
   jetsToken            = ic.consumes<edm::View<pat::Jet>>(iConfig.getParameter<edm::InputTag>("jets"));
   qgToken              = ic.consumes<edm::ValueMap<float>>(edm::InputTag("QGTagger", "qgLikelihood"));
   rhopogHandle_        = ic.consumes<double>(edm::InputTag("fixedGridRhoFastjetAll"));
-  //rhotthHandle_        = ic.consumes<double>(edm::InputTag("fixedGridRhoFastjetCentralNeutral"));
   _patElectron_pt_min  = iConfig.getParameter<double>("patElectron_pt_min");
   _patElectron_eta_max = iConfig.getParameter<double>("patElectron_eta_max");
   _vtx_ndof_min        = iConfig.getParameter<int>("vtx_ndof_min");
@@ -85,50 +64,9 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
   edm::Handle<double> rhopogHandle;
   iEvent.getByToken(rhopogHandle_,rhopogHandle);
   double rhopog = *rhopogHandle;
-  //edm::Handle<double> rhotthHandle;
-  //iEvent.getByToken(rhotthHandle_,rhotthHandle);
-  //double rhotth = *rhotthHandle;
   edm::ESHandle<TransientTrackBuilder> ttrkbuilder;
   iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder",ttrkbuilder);
   iEvent.getByToken(ebRecHitsToken_, _ebRecHits);
-  /*
-  edm::Handle<edm::ValueMap<bool>  > veto_id_decisions;
-  edm::Handle<edm::ValueMap<bool>  > loose_id_decisions;
-  edm::Handle<edm::ValueMap<bool>  > medium_id_decisions;
-  edm::Handle<edm::ValueMap<bool>  > tight_id_decisions;
-  edm::Handle<edm::ValueMap<bool>  > heep_id_decisions;
-  edm::Handle<edm::ValueMap<bool>  > mvatrig_id_decisions;
-  edm::Handle<edm::ValueMap<bool>  > mvanontrig_id_decisions;
-  edm::Handle<edm::ValueMap<bool>  > mvatrigwp90_id_decisions;
-  edm::Handle<edm::ValueMap<bool>  > mvanontrigwp90_id_decisions;
-  edm::Handle<edm::ValueMap<bool>  > mvatrigwpLoose_id_decisions;
-  edm::Handle<edm::ValueMap<bool>  > mvanontrigwpLoose_id_decisions;
-  edm::Handle<edm::ValueMap<float> > elemvaValues_nonTrig;
-  edm::Handle<edm::ValueMap<int> >   elemvaCategories_nonTrig;
-  edm::Handle<edm::ValueMap<float> > elemvaValues_Trig;
-  edm::Handle<edm::ValueMap<int> >   elemvaCategories_Trig;
-  edm::Handle<edm::ValueMap<float> > elemvaValues_HZZ;
-  edm::Handle<edm::ValueMap<int> >   elemvaCategories_HZZ;
-  edm::Handle<edm::ValueMap<bool>  > mvahzzwploose_id_decisions;
-  iEvent.getByToken(electronVetoIdMapToken_,   veto_id_decisions);
-  iEvent.getByToken(electronLooseIdMapToken_,  loose_id_decisions);
-  iEvent.getByToken(electronMediumIdMapToken_, medium_id_decisions);
-  iEvent.getByToken(electronTightIdMapToken_,  tight_id_decisions);  
-  iEvent.getByToken(eleMVATrigIdMapToken_,     mvatrig_id_decisions);  
-  iEvent.getByToken(eleMVAnonTrigIdMap_,       mvanontrig_id_decisions);  
-  iEvent.getByToken(eleMVATrigwp90IdMap_,      mvatrigwp90_id_decisions);  
-  iEvent.getByToken(eleMVAnonTrigwp90IdMap_,   mvanontrigwp90_id_decisions);  
-  iEvent.getByToken(eleMVATrigwpLooseIdMap_,      mvatrigwpLoose_id_decisions);  
-  iEvent.getByToken(eleMVAnonTrigwpLooseIdMap_,   mvanontrigwpLoose_id_decisions);  
-  iEvent.getByToken(eleHEEPIdMapToken_,        heep_id_decisions);
-  iEvent.getByToken(elemvaValuesMapToken_nonTrig_,     elemvaValues_nonTrig);
-  iEvent.getByToken(elemvaCategoriesMapToken_nonTrig_, elemvaCategories_nonTrig);
-  iEvent.getByToken(elemvaValuesMapToken_Trig_,        elemvaValues_Trig);
-  iEvent.getByToken(elemvaCategoriesMapToken_Trig_,    elemvaCategories_Trig);
-  iEvent.getByToken(eleMVAHZZwpLooseIdMap_,      mvahzzwploose_id_decisions);
-  iEvent.getByToken(elemvaValuesMapToken_HZZ_,     elemvaValues_HZZ);
-  iEvent.getByToken(elemvaCategoriesMapToken_HZZ_, elemvaCategories_HZZ);
-  */
   /////
   //   Require a good vertex 
   /////
@@ -157,24 +95,6 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
     patElectron_SCeta.push_back(EleSCeta);
     bool inCrack  = 1.4442<fabs(EleSCeta) && fabs(EleSCeta)<1.5660;
     patElectron_inCrack.push_back(inCrack);
-    //Energy smearer
-    double Ecorr=1;
-    if(_is_data){
-      DetId detid = el->superCluster()->seed()->seed();
-      const EcalRecHit * rh = NULL;
-      if (detid.subdetId() == EcalBarrel) {
-	auto rh_i = _ebRecHits->find(detid);
-	if( rh_i != _ebRecHits->end()) rh =  &(*rh_i);
-	else rh = NULL;
-      } 
-      if(rh==NULL) Ecorr=1;
-      else{
-	if(rh->energy() > 200 && rh->energy()<300)  Ecorr=1.0199;
-	else if(rh->energy()>300 && rh->energy()<400) Ecorr=  1.052;
-	else if(rh->energy()>400 && rh->energy()<500) Ecorr = 1.015;
-      }
-    }
-    patElectron_energyCorr.push_back(Ecorr);
     //Corrections
     if(el->energy()!=0) patElectron_energySF.push_back(el->userFloat("ecalTrkEnergyPostCorr")/el->energy());
     else patElectron_energySF.push_back(1.0);
@@ -208,25 +128,25 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
     patElectron_isGsfCtfScPixChargeConsistent.push_back(el->isGsfCtfScPixChargeConsistent());
     patElectron_isGsfScPixChargeConsistent.push_back(el->isGsfScPixChargeConsistent());
     //ID
-    float mvaval_nonTrig  = el->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV1Values");
-    passVetoId_.push_back  ( el->electronID("cutBasedElectronID-Fall17-94X-V1-veto"));
-    passLooseId_.push_back ( el->electronID("cutBasedElectronID-Fall17-94X-V1-loose"));
-    passMediumId_.push_back( el->electronID("cutBasedElectronID-Fall17-94X-V1-medium"));
-    passTightId_.push_back ( el->electronID("cutBasedElectronID-Fall17-94X-V1-tight"));
-    passMvatrigId_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wp80") );
-    passMvanontrigId_.push_back( el->electronID("mvaEleID-Fall17-noIso-V1-wp80") );
-    passMvatrigwp90Id_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wp90") );
-    passMvanontrigwp90Id_.push_back( el->electronID("mvaEleID-Fall17-noIso-V1-wp80") );
-    passMvatrigwpLooseId_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wpLoose") );
-    passMvanontrigwpLooseId_.push_back( el->electronID("mvaEleID-Fall17-noIso-V1-wpLoose") );
+    float mvaval_nonIso  = el->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV2Values");
+    passVetoId_.push_back  ( el->electronID("cutBasedElectronID-Fall17-94X-V2-veto"));
+    passLooseId_.push_back ( el->electronID("cutBasedElectronID-Fall17-94X-V2-loose"));
+    passMediumId_.push_back( el->electronID("cutBasedElectronID-Fall17-94X-V2-medium"));
+    passTightId_.push_back ( el->electronID("cutBasedElectronID-Fall17-94X-V2-tight"));
+    passMvaIsowp80Id_.push_back( el->electronID("mvaEleID-Fall17-iso-V2-wp80") );
+    passMvanonIsowp80Id_.push_back( el->electronID("mvaEleID-Fall17-noIso-V2-wp80") );
+    passMvaIsowp90Id_.push_back( el->electronID("mvaEleID-Fall17-iso-V2-wp90") );
+    passMvanonIsowp90Id_.push_back( el->electronID("mvaEleID-Fall17-noIso-V2-wp90") );
+    passMvaIsowpLooseId_.push_back( el->electronID("mvaEleID-Fall17-iso-V2-wpLoose") );
+    passMvanonIsowpLooseId_.push_back( el->electronID("mvaEleID-Fall17-noIso-V2-wpLoose") );
     passMvaHZZwpLooseId_.push_back( el->electronID("mvaEleID-Spring16-HZZ-V1-wpLoose") );
     patElectron_mvaValue_HZZ_.push_back(el->userFloat("ElectronMVAEstimatorRun2Spring16HZZV1Values"));
     patElectron_mvaCategory_HZZ_.push_back(el->userInt("ElectronMVAEstimatorRun2Spring16HZZV1Categories"));
     passHEEPId_.push_back  (el->electronID("heepElectronID-HEEPV70"));   
-    patElectron_mvaValue_nonTrig_.push_back(el->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV1Values"));
-    patElectron_mvaCategory_nonTrig_.push_back(el->userInt("ElectronMVAEstimatorRun2Fall17NoIsoV1Categories"));
-    patElectron_mvaValue_Trig_.push_back(el->userFloat("ElectronMVAEstimatorRun2Fall17IsoV1Values"));
-    patElectron_mvaCategory_Trig_.push_back(el->userInt("ElectronMVAEstimatorRun2Fall17IsoV1Categories"));
+    patElectron_mvaValue_nonIso_.push_back(el->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV2Values"));
+    patElectron_mvaCategory_nonIso_.push_back(el->userInt("ElectronMVAEstimatorRun2Fall17NoIsoV2Categories"));
+    patElectron_mvaValue_Iso_.push_back(el->userFloat("ElectronMVAEstimatorRun2Fall17IsoV2Values"));
+    patElectron_mvaCategory_Iso_.push_back(el->userInt("ElectronMVAEstimatorRun2Fall17IsoV2Categories"));
     patElectron_pdgId.push_back(el->pdgId());
     patElectron_isEcalDriven.push_back(el->ecalDriven());
     //Isolation
@@ -423,7 +343,7 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
       /*if(el->hasUserFloat("ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values")) patElectron_eleMVASpring15NonTrig25ns.push_back(el->userFloat("ElectronMVAEstimatorRun2Spring15NonTrig25nsV1Values"));   
 	else*/                                                                        patElectron_eleMVASpring15NonTrig25ns.push_back(-999); 
       bool nontrigelemva_vl = false;
-      double ntelemva = mvaval_nonTrig; 
+      double ntelemva = mvaval_nonIso; 
       double eleta    = fabs(el->superCluster()->position().eta());
       if((eleta < 0.8                   && ntelemva > -0.70) ||
          (0.8 <= eleta && eleta < 1.479 && ntelemva > -0.83) || 
@@ -628,7 +548,6 @@ void ElectronPatSelector::SetBranches(){
   AddBranch(&patElectron_eta          ,"patElectron_eta");
   AddBranch(&patElectron_phi          ,"patElectron_phi");
   AddBranch(&patElectron_energy       ,"patElectron_energy");
-  AddBranch(&patElectron_energyCorr   ,"patElectron_energyCorr");
   AddBranch(&patElectron_px           ,"patElectron_px");
   AddBranch(&patElectron_py           ,"patElectron_py");
   AddBranch(&patElectron_pz           ,"patElectron_pz");
@@ -673,18 +592,18 @@ void ElectronPatSelector::SetBranches(){
   AddBranch(&passMediumId_            ,"patElectron_isPassMedium");
   AddBranch(&passTightId_             ,"patElectron_isPassTight");
   AddBranch(&passHEEPId_              ,"patElectron_isPassHEEPId");
-  AddBranch(&passMvatrigId_           ,"patElectron_isPassMvatrig");
-  AddBranch(&passMvanontrigId_        ,"patElectron_isPassMvanontrig");
-  AddBranch(&passMvatrigwp90Id_       ,"patElectron_isPassMvatrigwp90");
-  AddBranch(&passMvanontrigwp90Id_    ,"patElectron_isPassMvanontrigwp90");
-  AddBranch(&passMvatrigwpLooseId_       ,"patElectron_isPassMvatrigwpLoose");
-  AddBranch(&passMvanontrigwpLooseId_    ,"patElectron_isPassMvanontrigwpLoose");
+  AddBranch(&passMvaIsowp80Id_           ,"patElectron_isPassMvaIsowp80");
+  AddBranch(&passMvanonIsowp80Id_        ,"patElectron_isPassMvanonIsowp80");
+  AddBranch(&passMvaIsowp90Id_       ,"patElectron_isPassMvaIsowp90");
+  AddBranch(&passMvanonIsowp90Id_    ,"patElectron_isPassMvanonIsowp90");
+  AddBranch(&passMvaIsowpLooseId_       ,"patElectron_isPassMvaIsowpLoose");
+  AddBranch(&passMvanonIsowpLooseId_    ,"patElectron_isPassMvanonIsowpLoose");
   AddBranch(&patElectron_pdgId        ,"patElectron_pdgId");
   AddBranch(&patElectron_isEcalDriven ,"patElectron_isEcalDriven");
-  AddBranch(&patElectron_mvaValue_nonTrig_    ,"patElectron_mvaValue_nonTrig");
-  AddBranch(&patElectron_mvaCategory_nonTrig_ ,"patElectron_mvaCategory_nonTrig");
-  AddBranch(&patElectron_mvaValue_Trig_    ,"patElectron_mvaValue_Trig");
-  AddBranch(&patElectron_mvaCategory_Trig_ ,"patElectron_mvaCategory_Trig");
+  AddBranch(&patElectron_mvaValue_nonIso_    ,"patElectron_mvaValue_nonIso");
+  AddBranch(&patElectron_mvaCategory_nonIso_ ,"patElectron_mvaCategory_nonIso");
+  AddBranch(&patElectron_mvaValue_Iso_    ,"patElectron_mvaValue_Iso");
+  AddBranch(&patElectron_mvaCategory_Iso_ ,"patElectron_mvaCategory_Iso");
   AddBranch(&passMvaHZZwpLooseId_       ,"patElectron_isPassMvaHZZwpLoose");
   AddBranch(&patElectron_mvaValue_HZZ_    ,"patElectron_mvaValue_HZZ");
   AddBranch(&patElectron_mvaCategory_HZZ_ ,"patElectron_mvaCategory_HZZ");
@@ -837,7 +756,6 @@ void ElectronPatSelector::Clear(){
   patElectron_eta.clear();
   patElectron_phi.clear();
   patElectron_energy.clear();
-  patElectron_energyCorr.clear();
   patElectron_px.clear();
   patElectron_py.clear();
   patElectron_pz.clear();
@@ -882,17 +800,18 @@ void ElectronPatSelector::Clear(){
   passMediumId_.clear();
   passTightId_.clear();  
   passHEEPId_.clear();
-  passMvatrigId_.clear();
-  passMvanontrigId_.clear();
-  passMvatrigwp90Id_.clear();
-  passMvanontrigwp90Id_.clear();
-  passMvanontrigwpLooseId_.clear();
+  passMvaIsowp80Id_.clear();
+  passMvanonIsowp80Id_.clear();
+  passMvaIsowp90Id_.clear();
+  passMvanonIsowp90Id_.clear();
+  passMvaIsowpLooseId_.clear();
+  passMvanonIsowpLooseId_.clear();
   patElectron_pdgId.clear();
   patElectron_isEcalDriven.clear();
-  patElectron_mvaValue_nonTrig_.clear();
-  patElectron_mvaCategory_nonTrig_.clear();
-  patElectron_mvaValue_Trig_.clear();
-  patElectron_mvaCategory_Trig_.clear();
+  patElectron_mvaValue_nonIso_.clear();
+  patElectron_mvaCategory_nonIso_.clear();
+  patElectron_mvaValue_Iso_.clear();
+  patElectron_mvaCategory_Iso_.clear();
   passMvaHZZwpLooseId_.clear();
   patElectron_mvaValue_HZZ_.clear();
   patElectron_mvaCategory_HZZ_.clear();

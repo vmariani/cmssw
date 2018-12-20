@@ -6,7 +6,7 @@ Andres Florez (Los Andes), Alfredo Gurrola (Vanderbilt) and Amandeep Kalsi (Panj
 
 It has been extended and further developed by Francesco Romeo (IHEP) and Aniello Spiezia (IHEP).
 
-This version of code is used for 2017 miniAOD v2 and v1  Ntuple production:
+This version of code is used for 2016 miniAOD v3 && 2017 miniAOD v2 and v1  Ntuple production:
 ####################################################
 
 
@@ -17,6 +17,7 @@ cmsenv
 ## set up Egamma Tools 
 ## https://twiki.cern.ch/twiki/bin/view/CMS/EgammaMiniAODV2
 git cms-init
+git cms-merge-topic cms-egamma:EgammaID_949 #if you want the FallV2 IDs, otherwise skip
 git cms-merge-topic cms-egamma:EgammaPostRecoTools_940 #just adds in an extra file to have a setup function to make things easier
 scram b -j 8
 
