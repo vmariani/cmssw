@@ -119,6 +119,9 @@ class EventInfoSelector : public baseTree{
   edm::EDGetTokenT<double> fixedGridRhoFastjetCentralHandle_;
   edm::EDGetTokenT<double> fixedGridRhoFastjetCentralChargedPileUpHandle_;
   edm::EDGetTokenT<double> fixedGridRhoFastjetCentralNeutralHandle_;
+  edm::EDGetTokenT< double > prefweight_token;
+  edm::EDGetTokenT< double > prefweightup_token;
+  edm::EDGetTokenT< double > prefweightdown_token;
   edm::EDGetTokenT<edm::TriggerResults> metFilterBits_;
   void Initialise();
   //Event quantities
@@ -132,6 +135,8 @@ class EventInfoSelector : public baseTree{
   double EVENT_PDFtthbbWeightUp_, EVENT_PDFtthbbWeightDown_, EVENT_Q2tthbbWeightUp_, EVENT_Q2tthbbWeightDown_;
   vector<double> EVENT_genWeights_;
   double EVENT_fixedGridRhoFastjetCentral, EVENT_fixedGridRhoFastjetCentralChargedPileUp, EVENT_fixedGridRhoFastjetCentralNeutral;
+  // L1 prefiring weights
+  double EVENT_prefireWeight_, EVENT_prefireWeightUp_, EVENT_prefireWeightDown_;
   //Event filters
   int Flag_HBHENoiseFilter;
   int Flag_HBHENoiseIsoFilter;

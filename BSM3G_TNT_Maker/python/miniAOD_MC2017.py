@@ -37,6 +37,17 @@ updateJetCollection(
   jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet','L2Relative','L3Absolute']), 'None')
 )
 
+##### L1 Prefire
+process.prefiringweight = cms.EDProducer("L1ECALPrefiringWeightProducer",
+        ThePhotons = cms.InputTag("slimmedPhotons"),
+        TheJets = cms.InputTag("slimmedJets"),
+        L1Maps = cms.string("/afs/cern.ch/work/b/binghuan/private/TTHLep2018/CMSSW_9_4_10/src/L1Prefiring/EventWeightProducer/files/L1PrefiringMaps_new.root"), # update this line with the location of this file
+        DataEra = cms.string("2017BtoF"), #Use 2016BtoH for 2016
+        UseJetEMPt = cms.bool(False), #can be set to true to use jet prefiring maps parametrized vs pt(em) instead of pt
+        PrefiringRateSystematicUncty = cms.double(0.2) #Minimum relative prefiring uncty per object
+                                                                                                                                                                                                                              )
+ 
+
 #####
 ##   ELECTRON ID and sclale smear SECTION
 #####
@@ -44,8 +55,9 @@ from RecoEgamma.EgammaTools.EgammaPostRecoTools import setupEgammaPostRecoSeq
 setupEgammaPostRecoSeq(process, 
         applyEnergyCorrections=False,
         applyVIDOnCorrectedEgamma=False,
-        runVID=True,
-        era='2017-Nov17ReReco')
+        #runEnergyCorrections=False, # False for 2016/2018, as energy corrections are not yet availible for 2018; corrections by default are fine for 2016 so no need to re-run
+        runVID=True, 
+        era='2017-Nov17ReReco') # '2018-Prompt', '2016-Legacy'
 
 
 
@@ -299,6 +311,7 @@ process.QGTagger.jetsLabel     = cms.string('QGL_AK4PFchs')
 ##   PROCESS
 #####
 process.p = cms.Path(
+process.prefiringweight *
 process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
 #process.regressionApplication *
 #process.calibratedPatElectrons  *

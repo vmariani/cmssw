@@ -26,6 +26,10 @@ scram b -j 8
 git cms-merge-topic cms-met:METFixEE2017_949_v2
 scram b -j 8
 
+## set up L1 prefire corrections
+# https://twiki.cern.ch/twiki/bin/viewauth/CMS/L1ECALPrefiringWeightRecipe
+git cms-merge-topic lathomas:L1Prefiring_9_4_9
+scram b
 
 ## set BSM Framework
 git clone https://github.com/BinghuanLi/BSMFramework.git
@@ -36,6 +40,6 @@ scram b -j 8
 
 ## To Run ##
 cd BSMFramework/BSM3G_TNT_Maker/python/
-cmsRun miniAOD_MC2017.py # Update v1 to v2 EgammaTools fixes, makes electron smeraing and ID access easier
+cmsRun miniAOD_MC2017.py # please provide the location of L1 prefire file to the producer.
 #data: cmsRun miniAOD_RD2017.py(not updated yet)  FIXME
 
