@@ -304,6 +304,20 @@ process.printGenParticleList = cms.EDAnalyzer("ParticleListDrawer",
 )
 
 #QG likelihood
+qgDatabaseVersion = 'v2b' # check https://twiki.cern.ch/twiki/bin/viewauth/CMS/QGDataBaseVersion
+from CondCore.DBCommon.CondDBSetup_cfi import *
+QGPoolDBESSource = cms.ESSource("PoolDBESSource",
+    CondDBSetup,
+    toGet = cms.VPSet(),
+    connect = cms.string('frontier://FrontierProd/CMS_COND_PAT_000'),
+)
+
+QGPoolDBESSource.toGet.extend(cms.VPSet(cms.PSet(
+    record = cms.string('QGLikelihoodRcd'),
+    tag    = cms.string('QGLikelihoodObject_'+qgDatabaseVersion+'_AK4PFchs'),
+    label  = cms.untracked.string('QGL_AK4PFchs')
+    )))
+
 process.load('BSMFramework.BSM3G_TNT_Maker.QGTagger_cfi')
 process.QGTagger.srcJets       = cms.InputTag('slimmedJets')
 process.QGTagger.jetsLabel     = cms.string('QGL_AK4PFchs')
