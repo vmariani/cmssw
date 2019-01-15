@@ -13,6 +13,7 @@ EventInfoSelector::EventInfoSelector(std::string name, TTree* tree, bool debug, 
   prefweightup_token = ic.consumes< double >(edm::InputTag("prefiringweight:NonPrefiringProbUp"));
   prefweightdown_token = ic.consumes< double >(edm::InputTag("prefiringweight:NonPrefiringProbDown"));
   metFilterBits_ = ic.consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("metFilterBits"));
+  ecalBadCalibFilterUpdate_token= ic.consumes< bool >(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
   _is_data = iConfig.getParameter<bool>("is_data");
   if(debug) std::cout<<"in EventInfoSelector constructor"<<std::endl;
   SetBranches();
@@ -33,6 +34,8 @@ void EventInfoSelector::Fill(const edm::Event& iEvent){
   iEvent.getByToken(genEvtInfo_,genEvtInfo);
   edm::Handle<LHEEventProduct> lheEventProduct;
   iEvent.getByToken(lheEventProduct_, lheEventProduct);
+  edm::Handle< bool > passecalBadCalibFilterUpdate ;
+  iEvent.getByToken(ecalBadCalibFilterUpdate_token,passecalBadCalibFilterUpdate);
   if(!_is_data){
     EVENT_genWeight_ = genEvtInfo->weight();
     const GenEventInfoProduct& genEventInfoW = *(genEvtInfo.product());
@@ -186,6 +189,7 @@ void EventInfoSelector::Fill(const edm::Event& iEvent){
   edm::Handle<edm::TriggerResults> metFilterBits;
   iEvent.getByToken(metFilterBits_, metFilterBits);
   const edm::TriggerNames &metNames = iEvent.triggerNames(*metFilterBits);
+  Flag_ecalBadCalibFilter = (*passecalBadCalibFilterUpdate);
   for(unsigned int i = 0, n = metFilterBits->size(); i < n; ++i){ 
     if(metNames.triggerName(i)=="Flag_HBHENoiseFilter")                    Flag_HBHENoiseFilter                    = metFilterBits->accept(i);
     if(metNames.triggerName(i)=="Flag_HBHENoiseIsoFilter")                 Flag_HBHENoiseIsoFilter                 = metFilterBits->accept(i);
@@ -206,10 +210,9 @@ void EventInfoSelector::Fill(const edm::Event& iEvent){
     if(metNames.triggerName(i)=="Flag_trkPOG_toomanystripclus53X")         Flag_trkPOG_toomanystripclus53X         = metFilterBits->accept(i);
     if(metNames.triggerName(i)=="Flag_trkPOG_logErrorTooManyClusters")     Flag_trkPOG_logErrorTooManyClusters     = metFilterBits->accept(i);
     if(metNames.triggerName(i)=="Flag_METFilters")                         Flag_METFilters                         = metFilterBits->accept(i);
-    if(metNames.triggerName(i)=="Flag_globalTightHalo2016Filter")                   Flag_globalTightHalo2016Filter                    = metFilterBits->accept(i);
+    if(metNames.triggerName(i)=="Flag_globalSuperTightHalo2016Filter")                   Flag_globalSuperTightHalo2016Filter                    = metFilterBits->accept(i);
     if(metNames.triggerName(i)=="Flag_BadPFMuonFilter")                   Flag_BadPFMuonFilter                    = metFilterBits->accept(i);
     if(metNames.triggerName(i)=="Flag_BadChargedCandidateFilter")                   Flag_BadChargedCandidateFilter                    = metFilterBits->accept(i);
-    if(metNames.triggerName(i)=="Flag_ecalBadCalibFilter")                   Flag_ecalBadCalibFilter                    = metFilterBits->accept(i);
   } //loop over met filters
 }
 void EventInfoSelector::SetBranches(){
@@ -255,7 +258,7 @@ void EventInfoSelector::SetBranches(){
   AddBranch(&Flag_trkPOG_toomanystripclus53X         ,"Flag_trkPOG_toomanystripclus53X");
   AddBranch(&Flag_trkPOG_logErrorTooManyClusters     ,"Flag_trkPOG_logErrorTooManyClusters");
   AddBranch(&Flag_METFilters                         ,"Flag_METFilters");
-  AddBranch(&Flag_globalTightHalo2016Filter                    ,"Flag_globalTightHalo2016Filter");
+  AddBranch(&Flag_globalSuperTightHalo2016Filter                    ,"Flag_globalSuperTightHalo2016Filter");
   AddBranch(&Flag_BadPFMuonFilter                    ,"Flag_BadPFMuonFilter");
   AddBranch(&Flag_BadChargedCandidateFilter                    ,"Flag_BadChargedCandidateFilter");
   AddBranch(&Flag_ecalBadCalibFilter                    ,"Flag_ecalBadCalibFilter");
@@ -302,7 +305,7 @@ void EventInfoSelector::Initialise(){
   Flag_trkPOG_toomanystripclus53X         = -9999;
   Flag_trkPOG_logErrorTooManyClusters     = -9999;
   Flag_METFilters                         = -9999;
-  Flag_globalTightHalo2016Filter                    = -9999;
+  Flag_globalSuperTightHalo2016Filter                    = -9999;
   Flag_BadPFMuonFilter                    = -9999;
   Flag_BadChargedCandidateFilter                    = -9999;
   Flag_ecalBadCalibFilter                    = -9999;

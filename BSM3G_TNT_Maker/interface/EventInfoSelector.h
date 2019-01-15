@@ -123,6 +123,7 @@ class EventInfoSelector : public baseTree{
   edm::EDGetTokenT< double > prefweightup_token;
   edm::EDGetTokenT< double > prefweightdown_token;
   edm::EDGetTokenT<edm::TriggerResults> metFilterBits_;
+  edm::EDGetTokenT< bool >ecalBadCalibFilterUpdate_token ;
   void Initialise();
   //Event quantities
   uint64_t EVENT_event_;
@@ -157,7 +158,7 @@ class EventInfoSelector : public baseTree{
   int Flag_trkPOG_toomanystripclus53X;
   int Flag_trkPOG_logErrorTooManyClusters;
   int Flag_METFilters;
-  int Flag_globalTightHalo2016Filter;
+  int Flag_globalSuperTightHalo2016Filter;
   int Flag_BadPFMuonFilter;
   int Flag_BadChargedCandidateFilter;
   int Flag_ecalBadCalibFilter;
