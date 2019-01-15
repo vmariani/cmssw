@@ -307,6 +307,7 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
       double eleptOVelejetptV2 = 1;
       double elejet_pfCombinedInclusiveSecondaryVertexV2BJetTags = -1;
       double elejet_pfDeepCSVBJetTags = -1;
+      double elejet_pfDeepFlavourBJetTags = -1;
       double elejet_pfJetProbabilityBJetTag = -1;
       double elejet_pfCombinedMVABJetTags = -1;
       double elejet_qgl = -3;
@@ -317,7 +318,7 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
       int lepjetidx = -1;
       get_elejet_info(el,iEvent,iSetup, elejet_l1corr, elejetislep,
                       elejet_mindr,elejet_pt,eleptOVelejetpt,
-                      elejet_pfCombinedInclusiveSecondaryVertexV2BJetTags,elejet_pfDeepCSVBJetTags,
+                      elejet_pfCombinedInclusiveSecondaryVertexV2BJetTags,elejet_pfDeepCSVBJetTags,elejet_pfDeepFlavourBJetTags,
                       elejet_pfJetProbabilityBJetTag,elejet_pfCombinedMVABJetTags,elejet_qgl,
                       elejetx,elejety,elejetz,eleptrel,lepjetidx);
       patElectron_jetdr.push_back(elejet_mindr);
@@ -335,6 +336,7 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
       patElectron_jetptratioV2.push_back(eleptOVelejetptV2);
       patElectron_jetcsv.push_back(elejet_pfCombinedInclusiveSecondaryVertexV2BJetTags);
       patElectron_jetdeepcsv.push_back(elejet_pfDeepCSVBJetTags);
+      patElectron_jetdeepflavour.push_back(elejet_pfDeepFlavourBJetTags);
       patElectron_ptrel.push_back(eleptrel);
       patElectron_elejet_pfJetProbabilityBJetTag.push_back(elejet_pfJetProbabilityBJetTag);
       patElectron_elejet_pfCombinedMVABJetTags.push_back(elejet_pfCombinedMVABJetTags);
@@ -672,6 +674,7 @@ void ElectronPatSelector::SetBranches(){
     AddBranch(&patElectron_jetptratioV2                   ,"patElectron_jetptratioV2");
     AddBranch(&patElectron_jetcsv                       ,"patElectron_jetcsv");
     AddBranch(&patElectron_jetdeepcsv                       ,"patElectron_jetdeepcsv");
+    AddBranch(&patElectron_jetdeepflavour                       ,"patElectron_jetdeepflavour");
     AddBranch(&patElectron_ptrel                        ,"patElectron_ptrel");
     AddBranch(&patElectron_IP3Dsig                      ,"patElectron_IP3Dsig");
     AddBranch(&patElectron_eleMVASpring15NonTrig25ns    ,"patElectron_eleMVASpring15NonTrig25ns");
@@ -880,6 +883,7 @@ void ElectronPatSelector::Clear(){
     patElectron_jetptratioV2.clear();
     patElectron_jetcsv.clear();
     patElectron_jetdeepcsv.clear();
+    patElectron_jetdeepflavour.clear();
     patElectron_ptrel.clear();
     patElectron_IP3Dsig.clear();
     patElectron_eleMVASpring15NonTrig25ns.clear();
@@ -1054,7 +1058,7 @@ double ElectronPatSelector::get_effarea(double eta){
 }
 void ElectronPatSelector::get_elejet_info(edm::View<pat::Electron>::const_iterator& ele, const edm::Event& iEvent, const edm::EventSetup& iSetup, double& elejet_l1corr, double& elejetislep,
                        double& elejet_mindr, double& elejet_pt, double& eleptOVelejetpt,
-                       double& elejet_pfCombinedInclusiveSecondaryVertexV2BJetTags, double& elejet_pfDeepCSVBJetTags,
+                       double& elejet_pfCombinedInclusiveSecondaryVertexV2BJetTags, double& elejet_pfDeepCSVBJetTags, double& elejet_pfDeepFlavourBJetTags,
                        double& elejet_pfJetProbabilityBJetTags, double& elejet_pfCombinedMVABJetTags, double& elejet_qgl,
                        double& jx, double& jy, double& jz, double& eleptrel,
                        int& lepjetidx){
@@ -1100,6 +1104,8 @@ void ElectronPatSelector::get_elejet_info(edm::View<pat::Electron>::const_iterat
   if(elejet_pfCombinedInclusiveSecondaryVertexV2BJetTags!=elejet_pfCombinedInclusiveSecondaryVertexV2BJetTags) elejet_pfCombinedInclusiveSecondaryVertexV2BJetTags = -996;
   elejet_pfDeepCSVBJetTags = max(double(elejet.bDiscriminator("pfDeepCSVJetTags:probb") + elejet.bDiscriminator("pfDeepCSVJetTags:probbb")), 0.0);
   if(elejet_pfDeepCSVBJetTags!=elejet_pfDeepCSVBJetTags) elejet_pfDeepCSVBJetTags = -996;
+  elejet_pfDeepFlavourBJetTags = max(double(elejet.bDiscriminator("pfDeepFlavourJetTags:probb") + elejet.bDiscriminator("pfDeepFlavourJetTags:probbb") + elejet.bDiscriminator("pfDeepFlavourJetTags:problepb")), 0.0);
+  if(elejet_pfDeepFlavourBJetTags!=elejet_pfDeepFlavourBJetTags) elejet_pfDeepFlavourBJetTags = -996;
   elejet_pfJetProbabilityBJetTags = elejet.bDiscriminator("pfJetProbabilityBJetTags");
   if(elejet_pfJetProbabilityBJetTags!=elejet_pfJetProbabilityBJetTags) elejet_pfJetProbabilityBJetTags = -996;
   elejet_pfCombinedMVABJetTags    = elejet.bDiscriminator("pfCombinedMVABJetTags");

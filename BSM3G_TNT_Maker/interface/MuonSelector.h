@@ -145,7 +145,7 @@ class MuonSelector : public  baseTree{
   double get_effarea(double eta);
   void get_mujet_info(const pat::Muon& mu, const edm::Event& iEvent, const edm::EventSetup& iSetup, double& mujet_l1corr, double& mujetislep,
                       double& mujet_mindr, double& mujet_pt, double& muptOVmujetpt,
-                      double& mujet_pfCombinedInclusiveSecondaryVertexV2BJetTags, double& mujet_pfDeepCSVBTags, double& mujet_pfJetProbabilityBJetTags, double& mujet_pfCombinedMVABJetTags, double& mujet_qgl,
+                      double& mujet_pfCombinedInclusiveSecondaryVertexV2BJetTags, double& mujet_pfDeepCSVBJetTags, double& mujet_pfDeepFlavourBJetTags, double& mujet_pfJetProbabilityBJetTags, double& mujet_pfCombinedMVABJetTags, double& mujet_qgl,
                       double& jx, double& jy, double& jz, double& muptrel,
                       int& lepjetidx);
   int pvassociation(const pat::Muon& mu, const pat::PackedCandidateCollection& pcc);
@@ -167,7 +167,7 @@ class MuonSelector : public  baseTree{
   bool is_goodtrk(Track trk,const reco::Vertex& vtx);
   //Variables
   vector<double> Muon_miniIsoRel, Muon_miniIsoCh, Muon_miniIsoNeu, Muon_miniIsoPUsub;
-  vector<double> Muon_jetdr, Muon_jetpt, Muon_jetptratio, Muon_jetcsv, Muon_ptrel, Muon_IP3Dsig_it, Muon_jetdeepcsv, Muon_jetptratioV2;
+  vector<double> Muon_jetdr, Muon_jetpt, Muon_jetptratio, Muon_jetcsv, Muon_ptrel, Muon_IP3Dsig_it, Muon_jetdeepcsv, Muon_jetdeepflavour, Muon_jetptratioV2;
   vector<double> Muon_jetl1corr;
   vector<double> Muon_jetislep;
   vector<int> Muon_jetidx;

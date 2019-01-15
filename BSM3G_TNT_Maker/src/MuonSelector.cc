@@ -334,6 +334,7 @@ void MuonSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       double muptOVmujetptV2  = 1;
       double mujet_pfCombinedInclusiveSecondaryVertexV2BJetTags = -1;
       double mujet_pfDeepCSVBJetTags = -1;
+      double mujet_pfDeepFlavourBJetTags = -1;
       double mujet_pfJetProbabilityBJetTag = -1;
       double mujet_pfCombinedMVABJetTags = -1;
       double mujet_qgl = -3;
@@ -344,7 +345,7 @@ void MuonSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       int lepjetidx = -1;
       get_mujet_info(*mu,iEvent,iSetup,mujet_l1corr, mujetislep,
                      mujet_mindr,mujet_pt,muptOVmujetpt,
-                     mujet_pfCombinedInclusiveSecondaryVertexV2BJetTags,mujet_pfDeepCSVBJetTags,
+                     mujet_pfCombinedInclusiveSecondaryVertexV2BJetTags,mujet_pfDeepCSVBJetTags, mujet_pfDeepFlavourBJetTags,
                      mujet_pfJetProbabilityBJetTag,mujet_pfCombinedMVABJetTags,mujet_qgl,
                      mujetx,mujety,mujetz,muptrel,lepjetidx);
       Muon_jetdr.push_back(mujet_mindr);
@@ -365,6 +366,7 @@ void MuonSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       Muon_jetptratioV2.push_back(muptOVmujetptV2);
       Muon_jetcsv.push_back(mujet_pfCombinedInclusiveSecondaryVertexV2BJetTags);
       Muon_jetdeepcsv.push_back(mujet_pfDeepCSVBJetTags);
+      Muon_jetdeepflavour.push_back(mujet_pfDeepFlavourBJetTags);
       Muon_ptrel.push_back(muptrel);
       Muon_mujet_pfJetProbabilityBJetTag.push_back(mujet_pfJetProbabilityBJetTag);
       Muon_mujet_pfCombinedMVABJetTags.push_back(mujet_pfCombinedMVABJetTags);
@@ -670,6 +672,7 @@ void MuonSelector::SetBranches(){
     AddBranch(&Muon_jetptratioV2        ,"Muon_jetptratioV2");
     AddBranch(&Muon_jetcsv            ,"Muon_jetcsv");
     AddBranch(&Muon_jetdeepcsv            ,"Muon_jetdeepcsv");
+    AddBranch(&Muon_jetdeepflavour            ,"Muon_jetdeepflavour");
     AddBranch(&Muon_ptrel             ,"Muon_ptrel");
     AddBranch(&Muon_IP3Dsig_it        ,"Muon_IP3Dsig_it");
     AddBranch(&Muon_pvass             ,"Muon_pvass");
@@ -856,6 +859,7 @@ void MuonSelector::Clear(){
     Muon_jetptratioV2.clear();
     Muon_jetcsv.clear();
     Muon_jetdeepcsv.clear();
+    Muon_jetdeepflavour.clear();
     Muon_ptrel.clear();
     Muon_IP3Dsig_it.clear();
     Muon_pvass.clear();
@@ -1015,7 +1019,7 @@ double MuonSelector::get_effarea(double eta){
 }
 void MuonSelector::get_mujet_info(const pat::Muon& mu, const edm::Event& iEvent, const edm::EventSetup& iSetup, double& mujet_l1corr, double& mujetislep,
                                   double& mujet_mindr, double& mujet_pt, double& muptOVmujetpt,
-                                  double& mujet_pfCombinedInclusiveSecondaryVertexV2BJetTags,double& mujet_pfDeepCSVBJetTags,
+                                  double& mujet_pfCombinedInclusiveSecondaryVertexV2BJetTags,double& mujet_pfDeepCSVBJetTags, double& mujet_pfDeepFlavourBJetTags,
                                    double& mujet_pfJetProbabilityBJetTags, double& mujet_pfCombinedMVABJetTags, double& mujet_qgl,
                                   double& jx, double& jy, double& jz, double& muptrel, int& lepjetidx){
   //Look for jet associated to mu
@@ -1074,6 +1078,8 @@ void MuonSelector::get_mujet_info(const pat::Muon& mu, const edm::Event& iEvent,
   if(mujet_pfCombinedInclusiveSecondaryVertexV2BJetTags!=mujet_pfCombinedInclusiveSecondaryVertexV2BJetTags) mujet_pfCombinedInclusiveSecondaryVertexV2BJetTags = -996;
   mujet_pfDeepCSVBJetTags = max(double(mujet.bDiscriminator("pfDeepCSVJetTags:probb") + mujet.bDiscriminator("pfDeepCSVJetTags:probbb")), 0.0);
   if(mujet_pfDeepCSVBJetTags!=mujet_pfDeepCSVBJetTags) mujet_pfDeepCSVBJetTags = -996;
+  mujet_pfDeepFlavourBJetTags = max(double(mujet.bDiscriminator("pfDeepFlavourJetTags:probb") + mujet.bDiscriminator("pfDeepFlavourJetTags:probbb")+mujet.bDiscriminator("pfDeepFlavourJetTags:problepb")), 0.0);
+  if(mujet_pfDeepFlavourBJetTags!=mujet_pfDeepFlavourBJetTags) mujet_pfDeepFlavourBJetTags = -996;
   mujet_pfJetProbabilityBJetTags = mujet.bDiscriminator("pfJetProbabilityBJetTags");
   if(mujet_pfJetProbabilityBJetTags!=mujet_pfJetProbabilityBJetTags) mujet_pfJetProbabilityBJetTags = -996;
   mujet_pfCombinedMVABJetTags    = mujet.bDiscriminator("pfCombinedMVABJetTags"); 

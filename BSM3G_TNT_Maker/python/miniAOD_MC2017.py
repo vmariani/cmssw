@@ -27,21 +27,35 @@ process.source = cms.Source("PoolSource",
 )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
 
-
 ##### JEC
 from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
 updateJetCollection(
   process,
   jetSource = cms.InputTag('slimmedJets'),
-  labelName = 'UpdatedJEC',
-  jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet','L2Relative','L3Absolute']), 'None')
+  pvSource = cms.InputTag('offlineSlimmedPrimaryVertices'),
+  svSource = cms.InputTag('slimmedSecondaryVertices'),
+  #labelName = 'UpdatedJEC',
+  jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet','L2Relative','L3Absolute']), 'None'),
+  btagDiscriminators = [
+     'pfDeepFlavourJetTags:probb',
+     'pfDeepFlavourJetTags:probbb',
+     'pfDeepFlavourJetTags:problepb',
+     'pfDeepFlavourJetTags:probc',
+     'pfDeepFlavourJetTags:probuds',
+     'pfDeepFlavourJetTags:probg'
+  ],
+  postfix='NewDFTraining'
 )
+
+jetsNameAK4="selectedUpdatedPatJetsNewDFTraining"
+
 
 ##### L1 Prefire
 process.prefiringweight = cms.EDProducer("L1ECALPrefiringWeightProducer",
         ThePhotons = cms.InputTag("slimmedPhotons"),
-        TheJets = cms.InputTag("slimmedJets"),
-        L1Maps = cms.string("/afs/cern.ch/work/b/binghuan/private/TTHLep2018/CMSSW_9_4_10/src/L1Prefiring/EventWeightProducer/files/L1PrefiringMaps_new.root"), # update this line with the location of this file
+        #TheJets = cms.InputTag("slimmedJets"),
+        TheJets = cms.InputTag(jetsNameAK4),
+        L1Maps = cms.string("/afs/cern.ch/work/b/binghuan/private/BSMFWTest/CMSSW_9_4_10/src/L1Prefiring/EventWeightProducer/files/L1PrefiringMaps_new.root"), # update this line with the location of this file
         DataEra = cms.string("2017BtoF"), #Use 2016BtoH for 2016
         UseJetEMPt = cms.bool(False), #can be set to true to use jet prefiring maps parametrized vs pt(em) instead of pt
         PrefiringRateSystematicUncty = cms.double(0.2) #Minimum relative prefiring uncty per object
@@ -192,8 +206,9 @@ process.TNT = cms.EDAnalyzer("BSM3G_TNT_Maker",
   ebRecHits = cms.InputTag("reducedEgamma","reducedEBRecHits"),
   #taus                = cms.InputTag("slimmedTaus"),
   taus                = cms.InputTag("NewTauIDsEmbedded"),
-  jets                = cms.InputTag("slimmedJets"),
-  lepjets             = cms.InputTag("updatedPatJetsUpdatedJEC"),
+  #jets                = cms.InputTag("slimmedJets"),
+  jets                = cms.InputTag(jetsNameAK4),
+  lepjets             = cms.InputTag(jetsNameAK4),
   jetsPUPPI           = cms.InputTag("slimmedJetsPuppi"),
   fatjets             = cms.InputTag("slimmedJetsAK8"),
   topsubjets          = cms.InputTag("slimmedJetsCMSTopTagCHSPacked", "SubJets"),
@@ -319,14 +334,26 @@ QGPoolDBESSource.toGet.extend(cms.VPSet(cms.PSet(
     )))
 
 process.load('BSMFramework.BSM3G_TNT_Maker.QGTagger_cfi')
-process.QGTagger.srcJets       = cms.InputTag('slimmedJets')
+#process.QGTagger.srcJets       = cms.InputTag('slimmedJets')
+process.QGTagger.srcJets       = cms.InputTag(jetsNameAK4)
 process.QGTagger.jetsLabel     = cms.string('QGL_AK4PFchs')
+
+## tasks ##
+process.tsk = cms.Task()
+for mod in process.producers_().itervalues():
+    process.tsk.add(mod)
+for mod in process.filters_().itervalues():
+    process.tsk.add(mod)
+
 #####
 ##   PROCESS
 #####
 process.p = cms.Path(
+#process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
+#process.patJetCorrFactorsTransientCorrectedNewDFTraining*
+#process.updatedPatJetsTransientCorrectedNewDFTraining*
+#process.selectedUpdatedPatJetsNewDFTraining *
 process.prefiringweight *
-process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
 #process.regressionApplication *
 #process.calibratedPatElectrons  *
 #process.electronIDValueMapProducer *
@@ -343,5 +370,6 @@ process.NewTauIDsEmbedded* # *getattr(process, "NewTauIDsEmbedded")
 #process.selectedHadronsAndPartons*process.genJetFlavourInfos*process.matchGenCHadron*process.matchGenBHadron*
 #process.primaryVertexFilter* 
 #process.CSCTightHaloFilter*process.eeBadScFilter*process.HBHENoiseFilterResultProducer*process.ApplyBaselineHBHENoiseFilter*
-process.TNT
+process.TNT,
+process.tsk
 )

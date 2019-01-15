@@ -14,12 +14,20 @@ cmsrel CMSSW_9_4_10
 cd CMSSW_9_4_10/src
 cmsenv
 
+git cms-init
+
+## set up bTagDeepFlavour
+## https://twiki.cern.ch/twiki/bin/view/CMS/DeepJet
+git cms-addpkg RecoBTag/TensorFlow
+git cherry-pick 94ceae257f846998c357fcad408986cc8a039152
+scram b -j 8
+
 ## set up Egamma Tools 
 ## https://twiki.cern.ch/twiki/bin/view/CMS/EgammaMiniAODV2
-git cms-init
 git cms-merge-topic cms-egamma:EgammaID_949 #if you want the FallV2 IDs, otherwise skip
 git cms-merge-topic cms-egamma:EgammaPostRecoTools_940 #just adds in an extra file to have a setup function to make things easier
-scram b -j 8
+scram b -j 8  # for unknown reason, it may incur errors, in such case, 'scram b clean' and recompile it; please let me know if you understand the reason of errors.
+         
 
 ## set up MET corrections with EE nosie fix
 # https://twiki.cern.ch/twiki/bin/view/CMS/MissingETUncertaintyPrescription#Instructions_for_9_4_X_X_9_for_2

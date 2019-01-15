@@ -135,7 +135,10 @@ class JetSelector : public  baseTree{
   vector<double> Jet_pt, Jet_eta, Jet_phi, Jet_energy, Jet_mass, Jet_px, Jet_py, Jet_pz, Jet_Uncorr_pt, Jet_L1corr_pt;
   //ID
   vector<double> Jet_pfCombinedInclusiveSecondaryVertexV2BJetTags, Jet_pfCombinedMVAV2BJetTags, Jet_pfJetProbabilityBJetTags, Jet_pfCombinedCvsLJetTags, Jet_pfCombinedCvsBJetTags, Jet_pileupId, Jet_isPFJet, Jet_isCaloJet;
-  vector<double> Jet_pfDeepCSVCvsLJetTags, Jet_pfDeepCSVCvsBJetTags, Jet_pfDeepCSVBJetTags;
+  vector<double> Jet_pfDeepCSVProbudsg, Jet_pfDeepCSVProbb, Jet_pfDeepCSVProbc, Jet_pfDeepCSVProbbb, Jet_pfDeepCSVProbcc;
+  vector<double> Jet_pfDeepCSVBJetTags;
+  vector<double> Jet_pfDeepFlavourProbuds, Jet_pfDeepFlavourProbb, Jet_pfDeepFlavourProbc, Jet_pfDeepFlavourProbbb, Jet_pfDeepFlavourProblepb, Jet_pfDeepFlavourProbg;
+  vector<double> Jet_pfDeepFlavourBJetTags;
   vector<double> Jet_qg, Jet_axis2, Jet_ptD, Jet_mult ;  
   //Energy
   vector<double> Jet_neutralHadEnergyFraction, Jet_neutralEmEnergyFraction, Jet_chargedHadronEnergyFraction, Jet_chargedEmEnergyFraction, Jet_muonEnergyFraction, Jet_electronEnergy, Jet_photonEnergy, Jet_emEnergyFraction;

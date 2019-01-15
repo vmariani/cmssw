@@ -159,7 +159,7 @@ class ElectronPatSelector : public  baseTree{
   double get_effarea(double eta);
   void get_elejet_info(edm::View<pat::Electron>::const_iterator& ele, const edm::Event& iEvent, const edm::EventSetup& iSetup, double& elejet_l1corr, double& elejetislep,
                        double& elejet_mindr, double& elejet_pt, double& eleptOVelejetpt,
-                       double& elejet_pfCombinedInclusiveSecondaryVertexV2BJetTags, double& elejet_pfDeepCSVBTags, double& elejet_pfJetProbabilityBJetTags, double& elejet_pfCombinedMVABJetTags, double& elejet_qgl,                       
+                       double& elejet_pfCombinedInclusiveSecondaryVertexV2BJetTags, double& elejet_pfDeepCSVBJetTags, double& elejet_pfDeepFlavourBJetTags, double& elejet_pfJetProbabilityBJetTags, double& elejet_pfCombinedMVABJetTags, double& elejet_qgl,                       
                        double& jx, double& jy, double& jz, double& eleptrel,
                        int& lepjetidx);
   int pvassociation(edm::View<pat::Electron>::const_iterator& ele, const pat::PackedCandidateCollection& pcc);
@@ -181,7 +181,7 @@ class ElectronPatSelector : public  baseTree{
   bool is_goodtrk(Track trk,const reco::Vertex& vtx);
   //Variables
   vector<double> patElectron_miniIsoRel, patElectron_miniIsoCh, patElectron_miniIsoNeu, patElectron_miniIsoPUsub;
-  vector<double> patElectron_jetdr, patElectron_jetpt, patElectron_jetptratio, patElectron_jetcsv, patElectron_ptrel, patElectron_IP3Dsig, patElectron_eleMVASpring15NonTrig25ns, patElectron_eleMVASpring15NonTrig25ns_VL, patElectron_jetdeepcsv, patElectron_jetptratioV2;
+  vector<double> patElectron_jetdr, patElectron_jetpt, patElectron_jetptratio, patElectron_jetcsv, patElectron_ptrel, patElectron_IP3Dsig, patElectron_eleMVASpring15NonTrig25ns, patElectron_eleMVASpring15NonTrig25ns_VL, patElectron_jetdeepcsv, patElectron_jetptratioV2, patElectron_jetdeepflavour;
   vector<double> patElectron_jetl1corr;
   vector<double> patElectron_jetislep;
   vector<int> patElectron_jetidx;
