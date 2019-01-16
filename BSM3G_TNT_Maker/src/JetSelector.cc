@@ -599,58 +599,59 @@ void JetSelector::GetJER(pat::Jet jet, float JesSF, float rhoJER, bool AK4PFchs,
   double cFactorJERdown = 1.0;
   double cFactorJERup = 1.0;
   //https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution#JER_Scaling_factors_and_Unce_AN1
-  if( jetEta<0.5 ){ 
-    cFactorJER = 1.109; 
-    cFactorJERdown = 1.109-0.008;
-    cFactorJERup   = 1.109+0.008; 
-  } else if( jetEta<0.8 ){ 
-    cFactorJER = 1.138; 
-    cFactorJERdown = 1.138-0.013;
-    cFactorJERup   = 1.138+0.013; 
-  } else if( jetEta<1.1 ){ 
-    cFactorJER = 1.114; 
-    cFactorJERdown = 1.114-0.013;
-    cFactorJERup   = 1.114+0.013; 
-  } else if( jetEta<1.3 ){ 
-    cFactorJER = 1.123; 
-    cFactorJERdown = 1.123-0.024;
-    cFactorJERup   = 1.123+0.024; 
-  } else if( jetEta<1.7 ){ 
-    cFactorJER = 1.084; 
-    cFactorJERdown = 1.084-0.011;
-    cFactorJERup   = 1.084+0.011; 
-  } else if( jetEta<1.9 ){ 
-    cFactorJER = 1.082; 
-    cFactorJERdown = 1.082-0.035;
-    cFactorJERup   = 1.082+0.035; 
-  } else if( jetEta<2.1 ){ 
-    cFactorJER = 1.140; 
-    cFactorJERdown = 1.140-0.047;
-    cFactorJERup   = 1.140+0.047; 
-  } else if( jetEta<2.3 ){ 
-    cFactorJER = 1.067; 
-    cFactorJERdown = 1.067-0.053;
-    cFactorJERup   = 1.067+0.053; 
+  // 2017 numbers only, FIXME 
+  if( jetEta<0.522 ){ 
+    cFactorJER = 1.1432; 
+    cFactorJERdown = 1.1432-0.0222;
+    cFactorJERup   = 1.1432+0.0222; 
+  } else if( jetEta<0.783 ){ 
+    cFactorJER = 1.1815; 
+    cFactorJERdown = 1.1815-0.0484;
+    cFactorJERup   = 1.1815+0.0484; 
+  } else if( jetEta<1.131 ){ 
+    cFactorJER = 1.0989; 
+    cFactorJERdown = 1.0989-0.0456;
+    cFactorJERup   = 1.0989+0.0456; 
+  } else if( jetEta<1.305 ){ 
+    cFactorJER = 1.1137; 
+    cFactorJERdown = 1.1137-0.1397;
+    cFactorJERup   = 1.1137+0.1397; 
+  } else if( jetEta<1.740 ){ 
+    cFactorJER = 1.1307; 
+    cFactorJERdown = 1.1307-0.1470;
+    cFactorJERup   = 1.1307+0.1470; 
+  } else if( jetEta<1.930 ){ 
+    cFactorJER = 1.1600; 
+    cFactorJERdown = 1.1600-0.0976;
+    cFactorJERup   = 1.1600+0.0976; 
+  } else if( jetEta<2.043 ){ 
+    cFactorJER = 1.2393; 
+    cFactorJERdown = 1.2393-0.1909;
+    cFactorJERup   = 1.2393+0.1909; 
+  } else if( jetEta<2.322 ){ 
+    cFactorJER = 1.2604; 
+    cFactorJERdown = 1.2604-0.1501;
+    cFactorJERup   = 1.2604+0.1501; 
   } else if( jetEta<2.5 ){ 
-    cFactorJER = 1.177; 
-    cFactorJERdown = 1.177-0.041;
-    cFactorJERup   = 1.177+0.041; 
-  } else if( jetEta<2.8 ){ 
-    cFactorJER = 1.364; 
-    cFactorJERdown = 1.364-0.039;
-    cFactorJERup   = 1.364+0.039; 
-  } else if( jetEta<3.0 ){ 
-    cFactorJER = 1.857; 
-    cFactorJERdown = 1.857-0.071;
-    cFactorJERup   = 1.857+0.071; 
-  } else if( jetEta<3.2 ){ 
-    cFactorJER = 1.328; 
-    cFactorJERdown = 1.328-0.022;
-    cFactorJERup   = 1.328+0.022; 
-  } else if( jetEta<5.0 ){ 
-    cFactorJER = 1.160; 
-    cFactorJERdown = 1.160-0.029;
-    cFactorJERup   = 1.160+0.029;
+    cFactorJER = 1.4085; 
+    cFactorJERdown = 1.4085-0.2020;
+    cFactorJERup   = 1.4085+0.2020; 
+  } else if( jetEta<2.853 ){ 
+    cFactorJER = 1.9909; 
+    cFactorJERdown = 1.9909-0.5684;
+    cFactorJERup   = 1.9909+0.5684; 
+  } else if( jetEta<2.964 ){ 
+    cFactorJER = 2.2923; 
+    cFactorJERdown = 2.2923-0.3743;
+    cFactorJERup   = 2.2923+0.3743; 
+  } else if( jetEta<3.139 ){ 
+    cFactorJER = 1.2696; 
+    cFactorJERdown = 1.2696-0.1089;
+    cFactorJERup   = 1.2696+0.1089; 
+  } else if( jetEta<5.191 ){ 
+    cFactorJER = 1.1542; 
+    cFactorJERdown = 1.1542-0.1524;
+    cFactorJERup   = 1.1542+0.1524;
   }
   //double recoJetPt = jet.pt();//(jet.correctedJet("Uncorrected").pt())*JesSF;
   double recoJetPt = (jet.correctedJet("Uncorrected").pt())*JesSF;
