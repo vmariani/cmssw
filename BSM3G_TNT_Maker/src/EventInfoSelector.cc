@@ -44,21 +44,25 @@ void EventInfoSelector::Fill(const edm::Event& iEvent){
     if(lheEventProduct.isValid()){
       EVENT_originalXWGTUP_ = lheEventProduct->originalXWGTUP();
       for (unsigned int i=0; i<lheEventProduct->weights().size(); i++){
-	  // save only first 10 intersted weights
-      // https://twiki.cern.ch/twiki/bin/view/Main/TheoreticalUncertainty#Weight
-     if(i<10) EVENT_genWeights_.push_back(lheEventProduct->weights()[i].wgt);
-     //std::cout << "lhe weight id " <<  lheEventProduct->weights()[i].id << std::endl;
-     if(lheEventProduct->weights()[i].id.find("rwgt")!=std::string::npos){
-         //std::cout<< " push rwgt " << lheEventProduct->weights()[i].id << std::endl;
-         EVENT_rWeights_.push_back(lheEventProduct->weights()[i].wgt);
-     }
-    //Q2 for ttHbb synchronization
-	if (lheEventProduct->weights()[i].id == "1005") EVENT_Q2tthbbWeightUp_   = lheEventProduct->weights()[i].wgt/lheEventProduct->originalXWGTUP(); 
-	if (lheEventProduct->weights()[i].id == "1009") EVENT_Q2tthbbWeightDown_ = lheEventProduct->weights()[i].wgt/lheEventProduct->originalXWGTUP(); 
+	    // save only first 10 interested weights
+        // https://twiki.cern.ch/twiki/bin/view/Main/TheoreticalUncertainty#Weight
+        if(i<10) EVENT_genWeights_.push_back(lheEventProduct->weights()[i].wgt);
+        //std::cout << "lhe weight id " <<  lheEventProduct->weights()[i].id << std::endl;
+        if(lheEventProduct->weights()[i].id.find("rwgt")!=std::string::npos)EVENT_rWeights_.push_back(lheEventProduct->weights()[i].wgt);
+        //Q2 for ttHbb synchronization
+	    if (lheEventProduct->weights()[i].id == "1005") EVENT_Q2tthbbWeightUp_   = lheEventProduct->weights()[i].wgt/lheEventProduct->originalXWGTUP(); 
+	    if (lheEventProduct->weights()[i].id == "1009") EVENT_Q2tthbbWeightDown_ = lheEventProduct->weights()[i].wgt/lheEventProduct->originalXWGTUP(); 
+      }
+      for (unsigned int j=0; j<genEvtInfo->weights().size(); j++){
+        // save ps weights
+        EVENT_psWeights_.push_back(genEvtInfo->weights()[j]);
       }
     } else {
       EVENT_genWeights_.push_back(-99);
+      EVENT_psWeights_.push_back(-99);
       EVENT_rWeights_.push_back(-99);
+      EVENT_originalXWGTUP_ = -99;
+      EVENT_scalePDF_ = -99;
       EVENT_originalXWGTUP_    = -99;
       EVENT_Q2tthbbWeightUp_   = -99;
       EVENT_Q2tthbbWeightDown_ = -99;
@@ -144,6 +148,7 @@ void EventInfoSelector::Fill(const edm::Event& iEvent){
     EVENT_originalXWGTUP_ = 1;
     EVENT_scalePDF_ = 1;
     EVENT_genWeights_.push_back(1);
+    EVENT_psWeights_.push_back(1);
     EVENT_rWeights_.push_back(1);
     EVENT_Q2tthbbWeightUp_    = 1;
     EVENT_Q2tthbbWeightDown_  = 1;
@@ -229,11 +234,14 @@ void EventInfoSelector::SetBranches(){
   AddBranch(&EVENT_lumiBlock_ ,"EVENT_lumiBlock");
   AddBranch(&EVENT_genWeight_ ,"EVENT_genWeight");
   AddBranch(&EVENT_genWeights_,"EVENT_genWeights");
+  AddBranch(&EVENT_psWeights_,"EVENT_psWeights");
   AddBranch(&EVENT_rWeights_,"EVENT_rWeights");
   AddBranch(&EVENT_genHT      ,"EVENT_genHT");
   AddBranch(&EVENT_genPt      ,"EVENT_genPt");
   AddBranch(&EVENT_rhopog_    ,"EVENT_rhopog");
   AddBranch(&EVENT_rhotth_    ,"EVENT_rhotth");
+  AddBranch(&EVENT_originalXWGTUP_    ,"EVENT_originalXWGTUP");
+  AddBranch(&EVENT_scalePDF_    ,"EVENT_scalePDF");
   AddBranch(&EVENT_Q2tthbbWeightUp_    ,"EVENT_Q2tthbbWeightUp");
   AddBranch(&EVENT_Q2tthbbWeightDown_  ,"EVENT_Q2tthbbWeightDown");
   AddBranch(&EVENT_PDFtthbbWeightUp_   ,"EVENT_PDFtthbbWeightUp");
@@ -277,11 +285,14 @@ void EventInfoSelector::Initialise(){
   EVENT_lumiBlock_  = -9999;
   EVENT_genWeight_  = -9999;
   EVENT_genWeights_.clear();
+  EVENT_psWeights_.clear();
   EVENT_rWeights_.clear();
   EVENT_genHT       = -9999;
   EVENT_genPt       = -9999;
   EVENT_rhopog_     = -9999;
   EVENT_rhotth_     = -9999; 
+  EVENT_scalePDF_ = -9999;
+  EVENT_originalXWGTUP_    = -9999;
   EVENT_Q2tthbbWeightUp_    = -9999; 
   EVENT_Q2tthbbWeightDown_  = -9999; 
   EVENT_PDFtthbbWeightUp_   = -9999; 

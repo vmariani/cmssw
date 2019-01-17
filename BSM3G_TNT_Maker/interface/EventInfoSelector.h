@@ -135,6 +135,7 @@ class EventInfoSelector : public baseTree{
   double EVENT_originalXWGTUP_, EVENT_scalePDF_;
   double EVENT_PDFtthbbWeightUp_, EVENT_PDFtthbbWeightDown_, EVENT_Q2tthbbWeightUp_, EVENT_Q2tthbbWeightDown_;
   vector<double> EVENT_genWeights_;
+  vector<double> EVENT_psWeights_;
   vector<double> EVENT_rWeights_;
   double EVENT_fixedGridRhoFastjetCentral, EVENT_fixedGridRhoFastjetCentralChargedPileUp, EVENT_fixedGridRhoFastjetCentralNeutral;
   // L1 prefiring weights

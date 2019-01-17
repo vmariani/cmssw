@@ -21,10 +21,9 @@ process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.source = cms.Source("PoolSource",
   fileNames = cms.untracked.vstring(
     #'/store/mc/RunIIFall17MiniAOD/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/20000/0CF65340-0200-E811-ABB7-0025905C53F0.root',
-    #'/store/mc/RunIIFall17MiniAODv2/THQ_4f_Hincl_13TeV_madgraph_pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/80000/2C019F75-4D63-E811-8621-00266CFFBC74.root',
-    '/store/mc/RunIIFall17MiniAODv2/THQ_ctcvcp_4f_Hincl_13TeV_madgraph_pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/00000/D0DD519F-5903-E911-AF2E-24BE05CE2D41.root',
+    #'/store/mc/RunIIFall17MiniAODv2/THQ_ctcvcp_4f_Hincl_13TeV_madgraph_pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/00000/D0DD519F-5903-E911-AF2E-24BE05CE2D41.root',
     #'/store/mc/RunIIFall17MiniAODv2/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/40000/062342A0-5942-E811-826C-002590D9D8D4.root',
-    #'/store/mc/RunIIFall17MiniAODv2/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/80000/FE6CEE38-1CB2-E811-ABDB-0CC47A4DEDF0.root',
+    '/store/mc/RunIIFall17MiniAODv2/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/80000/FE6CEE38-1CB2-E811-ABDB-0CC47A4DEDF0.root',
   ),
   skipEvents = cms.untracked.uint32(0)
 )
