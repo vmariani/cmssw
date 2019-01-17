@@ -47,13 +47,18 @@ void EventInfoSelector::Fill(const edm::Event& iEvent){
 	  // save only first 10 intersted weights
       // https://twiki.cern.ch/twiki/bin/view/Main/TheoreticalUncertainty#Weight
      if(i<10) EVENT_genWeights_.push_back(lheEventProduct->weights()[i].wgt);
-	//Q2 for ttHbb synchronization
-    //we may missing some LHE weights for THQ/THW, please check FIXME
+     //std::cout << "lhe weight id " <<  lheEventProduct->weights()[i].id << std::endl;
+     if(lheEventProduct->weights()[i].id.find("rwgt")!=std::string::npos){
+         //std::cout<< " push rwgt " << lheEventProduct->weights()[i].id << std::endl;
+         EVENT_rWeights_.push_back(lheEventProduct->weights()[i].wgt);
+     }
+    //Q2 for ttHbb synchronization
 	if (lheEventProduct->weights()[i].id == "1005") EVENT_Q2tthbbWeightUp_   = lheEventProduct->weights()[i].wgt/lheEventProduct->originalXWGTUP(); 
 	if (lheEventProduct->weights()[i].id == "1009") EVENT_Q2tthbbWeightDown_ = lheEventProduct->weights()[i].wgt/lheEventProduct->originalXWGTUP(); 
       }
     } else {
       EVENT_genWeights_.push_back(-99);
+      EVENT_rWeights_.push_back(-99);
       EVENT_originalXWGTUP_    = -99;
       EVENT_Q2tthbbWeightUp_   = -99;
       EVENT_Q2tthbbWeightDown_ = -99;
@@ -139,6 +144,7 @@ void EventInfoSelector::Fill(const edm::Event& iEvent){
     EVENT_originalXWGTUP_ = 1;
     EVENT_scalePDF_ = 1;
     EVENT_genWeights_.push_back(1);
+    EVENT_rWeights_.push_back(1);
     EVENT_Q2tthbbWeightUp_    = 1;
     EVENT_Q2tthbbWeightDown_  = 1;
     EVENT_PDFtthbbWeightUp_   = 1;
@@ -223,6 +229,7 @@ void EventInfoSelector::SetBranches(){
   AddBranch(&EVENT_lumiBlock_ ,"EVENT_lumiBlock");
   AddBranch(&EVENT_genWeight_ ,"EVENT_genWeight");
   AddBranch(&EVENT_genWeights_,"EVENT_genWeights");
+  AddBranch(&EVENT_rWeights_,"EVENT_rWeights");
   AddBranch(&EVENT_genHT      ,"EVENT_genHT");
   AddBranch(&EVENT_genPt      ,"EVENT_genPt");
   AddBranch(&EVENT_rhopog_    ,"EVENT_rhopog");
@@ -270,6 +277,7 @@ void EventInfoSelector::Initialise(){
   EVENT_lumiBlock_  = -9999;
   EVENT_genWeight_  = -9999;
   EVENT_genWeights_.clear();
+  EVENT_rWeights_.clear();
   EVENT_genHT       = -9999;
   EVENT_genPt       = -9999;
   EVENT_rhopog_     = -9999;
