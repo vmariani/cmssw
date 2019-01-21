@@ -55,6 +55,12 @@ if __name__ == '__main__':
 'Fall17V1_WZZ',
 'Fall17V1_ZZZ', #32
 'Fall17V1_TTTT_Tune',
+#####  new samples for MVA samples  2018 1102 #######
+'Fall17V2_ttZ_Tune',
+'Fall17V2_ttZ_ext_Tune',
+'Fall17V2_ttHnobb',
+'Fall17V2_ttWJets',
+'Fall17V2_ttW_ext_Jets',
                  ]
  datasetinputs = [
 '/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM',
@@ -92,16 +98,15 @@ if __name__ == '__main__':
 '/ZZZ_TuneCP5_13TeV-amcatnlo-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v11-v1/MINIAODSIM',
 '/TTTT_TuneCP5_13TeV-amcatnlo-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v2/MINIAODSIM',
 
-###################### Samples for V0 MVA ##################
-#'/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM',
-#'/TTWJetsToLNu_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v2/MINIAODSIM',
-#'/TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM',
-#'/TTZToLL_M-1to10_TuneCP5_13TeV-amcatnlo-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM',
-#'/TTJets_TuneCP5_13TeV-amcatnloFXFX-pythia8/RunIIFall17MiniAOD-94X_mc2017_realistic_v10-v1/MINIAODSIM',
+###################### Samples for MVA ##################
+'/ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM',
+'/ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v3/MINIAODSIM',
+'/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM',
+'/ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM',
+'/ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v2/MINIAODSIM',
                 ]
 
-for d in range(9,10):
-#for d in range(0,len(datasetnames)):
+for d in range(34,len(datasetnames)-1):
 #for d in range(len(datasetnames)-1,len(datasetnames)):
 #for d in [5,9,11,14,25,32]:
     print 'multicrab.py: Running datasetname: ', datasetnames[d]
@@ -114,7 +119,8 @@ for d in range(9,10):
     config.section_('JobType')
     config.JobType.pluginName  = 'Analysis'
     # List of parameters to pass to CMSSW parameter-set configuration file:
-    config.JobType.psetName    = '/afs/cern.ch/work/b/binghuan/private/TTHLep2017/CMSSW_9_4_2/src/BSMFramework/BSM3G_TNT_Maker/python/miniAOD_MC2017.py'
+    config.JobType.psetName    = '/afs/cern.ch/work/b/binghuan/private/BSMFWTest/CMSSW_9_4_10/src/BSMFramework/BSM3G_TNT_Maker/python/miniAOD_MC2017.py'
+    config.JobType.inputFiles = ['/afs/cern.ch/work/b/binghuan/private/BSMFWTest/CMSSW_9_4_10/src/BSMFramework/BSM3G_TNT_Maker/data/L1Prefire/L1PrefiringMaps_new.root']
     config.JobType.sendExternalFolder = True
     config.JobType.maxMemoryMB = 2000 # Default == 2Gb : maximum guaranteed to run on all sites
     #config.JobType.allowUndistributedCMSSW = True
