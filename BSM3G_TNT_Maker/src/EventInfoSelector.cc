@@ -63,7 +63,6 @@ void EventInfoSelector::Fill(const edm::Event& iEvent){
       EVENT_rWeights_.push_back(-99);
       EVENT_originalXWGTUP_ = -99;
       EVENT_scalePDF_ = -99;
-      EVENT_originalXWGTUP_    = -99;
       EVENT_Q2tthbbWeightUp_   = -99;
       EVENT_Q2tthbbWeightDown_ = -99;
     }
