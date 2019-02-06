@@ -106,7 +106,7 @@ if __name__ == '__main__':
 '/ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v2/MINIAODSIM',
                 ]
 
-for d in range(34,len(datasetnames)-1):
+for d in range(34,len(datasetnames)):
 #for d in range(len(datasetnames)-1,len(datasetnames)):
 #for d in [5,9,11,14,25,32]:
     print 'multicrab.py: Running datasetname: ', datasetnames[d]

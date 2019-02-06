@@ -122,7 +122,7 @@ class METSelector : public baseTree{
   //Corrections/Systematics
   double Met_type1PF_shiftedPtUp, Met_type1PF_shiftedPtDown;
   //MC
-  double Gen_type1PF_Met;
+  double Gen_type1PF_Met, Gen_type1PF_px, Gen_type1PF_py;
   ////slimmedMETsPUPPI
   double Met_puppi_pt, Met_puppi_px, Met_puppi_py, Met_puppi_pz, Met_puppi_phi, Met_puppi_sumEt;
   //Corrections/Systematics
