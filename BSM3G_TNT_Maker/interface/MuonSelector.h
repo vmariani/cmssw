@@ -125,6 +125,8 @@ class MuonSelector : public  baseTree{
   //ID
   vector<int>    Muon_soft, Muon_loose, Muon_medium, Muon_tight, Muon_isHighPt, Muon_POGisGood, Muon_pdgId, Muon_pf, Muon_isGlobal, Muon_isTrackerMuon, Muon_tunePBestTrackType;
   vector<int> Muon_isTrkHighPt, Muon_TrkIsoLoose, Muon_TrkIsoTight, Muon_TrigLoose;
+  // Gen Info
+  vector<int> Muon_simFlavour, Muon_simPdgId, Muon_simMotherPdgId;
   //Isolation
   vector<double> Muon_isoR04Charged, Muon_isoR04NeutralHadron, Muon_isoR04Photon, Muon_isoR04PU, Muon_relIsoDeltaBetaR04, Muon_isoR04CharParPt, 
                  Muon_isoR03Charged, Muon_isoR03NeutralHadron, Muon_isoR03Photon, Muon_isoR03PU, Muon_relIsoDeltaBetaR03, Muon_isoR03CharParPt, 

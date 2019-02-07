@@ -164,6 +164,9 @@ void MuonSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     Muon_TrigLoose.push_back(-999); // robust HLT Trigger, valid since 10X
     Muon_POGisGood.push_back(muon::isGoodMuon(*mu, muon::TMOneStationTight));
     Muon_pdgId.push_back(mu->pdgId());
+    Muon_simPdgId.push_back(mu->simPdgId());
+    Muon_simMotherPdgId.push_back(mu->simMotherPdgId());
+    Muon_simFlavour.push_back(mu->simFlavour());
     Muon_pf.push_back(mu->isPFMuon());   
     Muon_isGlobal.push_back(mu->isGlobalMuon());   
     Muon_isTrackerMuon.push_back(mu->isTrackerMuon());
@@ -594,6 +597,9 @@ void MuonSelector::SetBranches(){
   AddBranch(&Muon_TrigLoose          ,"Muon_TrigLoose");
   AddBranch(&Muon_POGisGood          ,"Muon_POGisGood");
   AddBranch(&Muon_pdgId              ,"Muon_pdgId");
+  AddBranch(&Muon_simPdgId              ,"Muon_simPdgId");
+  AddBranch(&Muon_simMotherPdgId              ,"Muon_simMotherPdgId");
+  AddBranch(&Muon_simFlavour              ,"Muon_simFlavour");
   AddBranch(&Muon_pf                 ,"Muon_pf");
   AddBranch(&Muon_isGlobal           ,"Muon_isGlobal");
   AddBranch(&Muon_isTrackerMuon      ,"Muon_isTrackerMuon");
@@ -781,6 +787,9 @@ void MuonSelector::Clear(){
   Muon_TrigLoose.clear();
   Muon_POGisGood.clear();
   Muon_pdgId.clear();
+  Muon_simPdgId.clear();
+  Muon_simMotherPdgId.clear();
+  Muon_simFlavour.clear();
   Muon_pf.clear();   
   Muon_isGlobal.clear();   
   Muon_isTrackerMuon.clear();
