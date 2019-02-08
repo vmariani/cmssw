@@ -21,6 +21,7 @@ BSM3G_TNT_Maker::BSM3G_TNT_Maker(const edm::ParameterSet& iConfig):
   _Muon_eta_max       = iConfig.getParameter<double>("Muon_eta_max");
   _patElectron_pt_min  = iConfig.getParameter<double>("patElectron_pt_min");
   _patElectron_eta_max = iConfig.getParameter<double>("patElectron_eta_max");
+  PUInfo_          = consumesCollector().consumes<std::vector< PileupSummaryInfo> >(edm::InputTag("slimmedAddPileupInfo"));
   debug_                 = iConfig.getParameter<bool>("debug_");
   bjetnessselfilter      = iConfig.getParameter<bool>("bjetnessselfilter");
   _is_data               = iConfig.getParameter<bool>("is_data");
@@ -51,6 +52,8 @@ BSM3G_TNT_Maker::BSM3G_TNT_Maker(const edm::ParameterSet& iConfig):
   evtree_ = fs->make<TTree>("evtree","evtree");
   evtree_->Branch("eventnum",&eventnum,"eventnum/I");
   evtree_->Branch("eventnumnegative",&eventnumnegative,"eventnumnegative/I");
+  evtree_->Branch("nPUVertices",&nPUVertices,"nPUVertices/I");
+  evtree_->Branch("TrueInteractions",&TrueInteractions,"TrueInteractions/D");
   tree_   = fs->make<TTree>("BOOM","BOOM");
   if(_fillgeninfo)           genselector        = new GenParticleSelector("miniAOD", tree_, debug_, iConfig, consumesCollector());
   if(_fillgenHFCategoryinfo) genhfselector      = new GenHFHadrMatchSelector("miniAOD", tree_, debug_, iConfig, consumesCollector());
@@ -95,10 +98,22 @@ void BSM3G_TNT_Maker::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   eventnum = -1;
   eventnum = iEvent.id().event();
   eventnumnegative = 1;
+  nPUVertices = 0;
+  TrueInteractions = 0;
+  std::vector<PileupSummaryInfo>::const_iterator PVI;
   if(!_is_data){
     edm::Handle<GenEventInfoProduct> genEvtInfo;
     iEvent.getByLabel("generator",genEvtInfo);
     eventnumnegative = (genEvtInfo->weight())/abs(genEvtInfo->weight());
+    Handle<std::vector< PileupSummaryInfo > >  PUInfo;
+    iEvent.getByToken(PUInfo_, PUInfo); 
+    for(PVI = PUInfo->begin(); PVI != PUInfo->end(); ++PVI){
+      if(PVI->getBunchCrossing() == 0){
+        nPUVertices += PVI->getPU_NumInteractions();
+        TrueInteractions = PVI->getTrueNumInteractions();
+      }
+      if(debug_)std::cout << " Pileup Information: bunchXing, nvtx,true nvtx: " << PVI->getBunchCrossing() << " " << PVI->getPU_NumInteractions()<< " "<< PVI->getTrueNumInteractions()<< std::endl;
+    }//loop over pileup info
   }
   evtree_->Fill();
   //Require trigger on the event

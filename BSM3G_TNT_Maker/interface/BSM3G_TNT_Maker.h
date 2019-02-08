@@ -96,6 +96,8 @@ class BSM3G_TNT_Maker : public edm::EDAnalyzer {
   double _patElectron_eta_max;
   edm::EDGetTokenT<edm::View<pat::Muon> > muon_h_;
   edm::EDGetTokenT<edm::View<pat::Electron> > electron_pat_;
+  // Config relates to PU
+  edm::EDGetTokenT<std::vector< PileupSummaryInfo> > PUInfo_;
   /////
   //   All 
   /////
@@ -103,6 +105,8 @@ class BSM3G_TNT_Maker : public edm::EDAnalyzer {
   TTree* evtree_;
   int eventnum;
   int eventnumnegative;
+  int nPUVertices;
+  double TrueInteractions;
   TTree* tree_;
   const size_t MaxN;
   bool debug_;
