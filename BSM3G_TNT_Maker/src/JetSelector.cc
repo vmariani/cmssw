@@ -89,6 +89,9 @@ void JetSelector::Fill(const edm::Event& iEvent){
     Jet_pz.push_back(j.pz());          
     Jet_Uncorr_pt.push_back(j.correctedJet("Uncorrected").pt()); 
     Jet_L1corr_pt.push_back(j.correctedJet(1).pt());                
+    //double L1_corr = j.jecFactor("L1FastJet")/j.jecFactor("Uncorrected");
+    //std::cout<<iEvent.id().event()  <<"jet pt "<<j.pt()<<" L1Factor "<<L1_corr<<" closetJet unCorr p4"<<j.correctedJet("Uncorrected").p4() <<" closetJet corr0 Pt " << j.correctedJet(0)<<  "L1corrjet "<< j.correctedJet(1) << " jecFactor.L1FastJet "<< j.jecFactor("L1FastJet")<< " jecFactor.Uncorrected "<< j.jecFactor("Uncorrected") <<std::endl;
+    
     //ID
     Jet_pfCombinedInclusiveSecondaryVertexV2BJetTags.push_back(j.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags"));
     Jet_pfCombinedMVAV2BJetTags.push_back(j.bDiscriminator("pfCombinedMVAV2BJetTags"));

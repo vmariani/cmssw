@@ -1136,7 +1136,7 @@ void ElectronPatSelector::get_elejet_info(edm::View<pat::Electron>::const_iterat
   if(elejet.jecSetsAvailable()){
     if((elejet.correctedJet("Uncorrected").p4()-ele->p4()).R()<1e-4)elejetislep=1;
     double L1_corr = elejet.jecFactor("L1FastJet")/elejet.jecFactor("Uncorrected");
-    //std::cout<<iEvent.id().event()  <<" Electron pt "<<ele->p4().pt()<<" L1Factor "<<L1_corr<<" closetJet Uncorr Pt " << elejet.correctedJet(0)<<  "L1corrjet "<< elejet.correctedJet(1) << " jecFactor.L1FastJet "<< elejet.jecFactor("L1FastJet")<< " jecFactor.Uncorrected "<< elejet.jecFactor("Uncorrected") <<std::endl;
+    //std::cout<<iEvent.id().event()  <<" Electron pt "<<ele->p4().pt()<<" L1Factor "<<L1_corr<<" closetJet unCorr p4"<<elejet.correctedJet("Uncorrected").p4() <<" closetJet corr0 Pt " << elejet.correctedJet(0)<<  "L1corrjet "<< elejet.correctedJet(1) << " jecFactor.L1FastJet "<< elejet.jecFactor("L1FastJet")<< " jecFactor.Uncorrected "<< elejet.jecFactor("Uncorrected") << " jet pt " << elejet.pt() <<std::endl;
     elejet.setP4((elejet.correctedJet("Uncorrected").p4()-ele->p4()*(1.0/L1_corr))*(elejet.p4().pt()/elejet.correctedJet("Uncorrected").p4().pt())+ele->p4());
     elejet_l1corr = L1_corr;
     elejet_pt       = elejet.pt();
