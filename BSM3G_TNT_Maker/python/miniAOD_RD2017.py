@@ -170,6 +170,14 @@ updateJetCollection(
   ],
   postfix='NewDFTraining'
 )
+
+updateJetCollection(
+  process,
+  jetSource = cms.InputTag('slimmedJets'),
+  labelName = 'UpdatedJEC',
+  jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet','L2Relative','L3Absolute']), 'None')
+)
+
 jetsNameAK4="selectedUpdatedPatJetsNewDFTraining"
 
 ##### L1 Prefire
@@ -353,7 +361,7 @@ process.TNT = cms.EDAnalyzer("BSM3G_TNT_Maker",
   #taus                = cms.InputTag("slimmedTaus"),
   taus                = cms.InputTag("NewTauIDsEmbedded"),
   jets                = cms.InputTag(jetsNameAK4),
-  lepjets             = cms.InputTag(jetsNameAK4),
+  lepjets             = cms.InputTag("updatedPatJetsUpdatedJEC"),
   jetsPUPPI           = cms.InputTag("slimmedJetsPuppi"),
   fatjets             = cms.InputTag("slimmedJetsAK8"),
   topsubjets          = cms.InputTag("slimmedJetsCMSTopTagCHSPacked", "SubJets"),
@@ -493,6 +501,7 @@ for mod in process.filters_().itervalues():
 #####
 process.p = cms.Path(
 process.ecalBadCalibReducedMINIAODFilter*
+process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
 process.prefiringweight *
 #process.egmPhotonIDSequence *
 #process.egammaScaleSmearAndVIDSeq *

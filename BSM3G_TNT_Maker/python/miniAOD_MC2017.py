@@ -11,7 +11,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff")
 process.load("Geometry.CaloEventSetup.CaloTowerConstituents_cfi")
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag.globaltag = '94X_mc2017_realistic_v17'
+process.GlobalTag.globaltag = '94X_mc2017_realistic_v14'
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 
@@ -20,15 +20,15 @@ process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 #####
 process.source = cms.Source("PoolSource",
   fileNames = cms.untracked.vstring(
-    #'/store/mc/RunIIFall17MiniAOD/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/20000/0CF65340-0200-E811-ABB7-0025905C53F0.root',
+    '/store/mc/RunIIFall17MiniAOD/ttHJetToNonbb_M125_TuneCP5_13TeV_amcatnloFXFX_madspin_pythia8/MINIAODSIM/94X_mc2017_realistic_v10-v1/20000/0CF65340-0200-E811-ABB7-0025905C53F0.root',
     #'/store/mc/RunIIFall17MiniAODv2/THQ_ctcvcp_4f_Hincl_13TeV_madgraph_pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/00000/D0DD519F-5903-E911-AF2E-24BE05CE2D41.root',
-    '/store/mc/RunIIFall17MiniAODv2/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/40000/062342A0-5942-E811-826C-002590D9D8D4.root',
+    #'/store/mc/RunIIFall17MiniAODv2/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/40000/062342A0-5942-E811-826C-002590D9D8D4.root',
     #'/store/mc/RunIIFall17MiniAODv2/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/80000/FE6CEE38-1CB2-E811-ABDB-0CC47A4DEDF0.root',
     #'/store/mc/RunIIFall17MiniAODv2/QCD_HT1500to2000_TuneCP5_13TeV-madgraph-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/10000/A4FF87E3-2C5C-E811-A59A-0CC47A7C340E.root ',
   ),
   skipEvents = cms.untracked.uint32(0)
 )
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 ##### JEC
 from PhysicsTools.PatAlgos.tools.jetTools import updateJetCollection
@@ -48,6 +48,13 @@ updateJetCollection(
      'pfDeepFlavourJetTags:probg'
   ],
   postfix='NewDFTraining'
+)
+
+updateJetCollection(
+  process,
+  jetSource = cms.InputTag('slimmedJets'),
+  labelName = 'UpdatedJEC',
+  jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet','L2Relative','L3Absolute']), 'None')
 )
 
 jetsNameAK4="selectedUpdatedPatJetsNewDFTraining"
@@ -235,7 +242,8 @@ process.TNT = cms.EDAnalyzer("BSM3G_TNT_Maker",
   taus                = cms.InputTag("NewTauIDsEmbedded"),
   #jets                = cms.InputTag("slimmedJets"),
   jets                = cms.InputTag(jetsNameAK4),
-  lepjets             = cms.InputTag(jetsNameAK4),
+  lepjets             = cms.InputTag("updatedPatJetsUpdatedJEC"),
+  #lepjets             = cms.InputTag(jetsNameAK4),
   jetsPUPPI           = cms.InputTag("slimmedJetsPuppi"),
   fatjets             = cms.InputTag("slimmedJetsAK8"),
   topsubjets          = cms.InputTag("slimmedJetsCMSTopTagCHSPacked", "SubJets"),
@@ -377,7 +385,7 @@ for mod in process.filters_().itervalues():
 #####
 process.p = cms.Path(
 process.ecalBadCalibReducedMINIAODFilter*
-#process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
+process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
 process.prefiringweight *
 #process.regressionApplication *
 #process.calibratedPatElectrons  *
