@@ -20,7 +20,6 @@ BoostedJetSelector::BoostedJetSelector(std::string name, TTree* tree, bool debug
   jerAK8PFPuppi_   = iConfig.getParameter<edm::FileInPath>("jerAK8PFPuppi").fullPath();
   jerAK8PFPuppiSF_ = iConfig.getParameter<edm::FileInPath>("jerAK8PFPuppiSF").fullPath();
   _is_data = iConfig.getParameter<bool>("is_data");
-  _MC2016   = iConfig.getParameter<bool>("MC2016");
   PuppiWeightFilePath_ = iConfig.getParameter<edm::FileInPath>("PuppiWeightFilePath");
   const char *filePath = PuppiWeightFilePath_.fullPath().c_str();
   PuppiWeightFile = new TFile (filePath,"READ");
@@ -77,21 +76,11 @@ void BoostedJetSelector::Fill(const edm::Event& iEvent){
     BoostedJet_electronEnergy.push_back(j.electronEnergy());                               
     BoostedJet_photonEnergy.push_back(j.photonEnergy());
     //Boosted jet prop
-    if(!_MC2016){
-      BoostedJet_tau1.push_back(j.userFloat("ak8PFJetsCHSValueMap:NjettinessAK8CHSTau1"));    //
-      BoostedJet_tau2.push_back(j.userFloat("ak8PFJetsCHSValueMap:NjettinessAK8CHSTau2"));    //  Access the n-subjettiness variables
-      BoostedJet_tau3.push_back(j.userFloat("ak8PFJetsCHSValueMap:NjettinessAK8CHSTau3"));    // 
-      BoostedJet_softdrop_mass.push_back(j.userFloat("ak8PFJetsCHSValueMap:ak8PFJetsCHSSoftDropMass")); // access to soft drop mass
-      //BoostedJet_trimmed_mass.push_back(j.userFloat("ak8PFJetsCHSTrimmedMass"));   // access to trimmed mass
-      BoostedJet_pruned_mass.push_back(j.userFloat("ak8PFJetsCHSValueMap:ak8PFJetsCHSPrunedMass"));     // access to pruned mass
-      //BoostedJet_filtered_mass.push_back(j.userFloat("ak8PFJetsCHSFilteredMass")); // access to filtered mass
-    } else {
-      BoostedJet_tau1.push_back(j.userFloat("NjettinessAK8:tau1"));    //
-      BoostedJet_tau2.push_back(j.userFloat("NjettinessAK8:tau2"));    //  Access the n-subjettiness variables
-      BoostedJet_tau3.push_back(j.userFloat("NjettinessAK8:tau3"));    // 
-      BoostedJet_softdrop_mass.push_back(j.userFloat("ak8PFJetsCHSSoftDropMass")); // access to soft drop mass
-      BoostedJet_pruned_mass.push_back(j.userFloat("ak8PFJetsCHSPrunedMass"));     // access to pruned mass 
-    }
+    BoostedJet_tau1.push_back(j.userFloat("ak8PFJetsCHSValueMap:NjettinessAK8CHSTau1"));    //
+    BoostedJet_tau2.push_back(j.userFloat("ak8PFJetsCHSValueMap:NjettinessAK8CHSTau2"));    //  Access the n-subjettiness variables
+    BoostedJet_tau3.push_back(j.userFloat("ak8PFJetsCHSValueMap:NjettinessAK8CHSTau3"));    // 
+    BoostedJet_softdrop_mass.push_back(j.userFloat("ak8PFJetsCHSValueMap:ak8PFJetsCHSSoftDropMass")); // access to soft drop mass
+    BoostedJet_pruned_mass.push_back(j.userFloat("ak8PFJetsCHSValueMap:ak8PFJetsCHSPrunedMass"));     // access to pruned mass
     //Jet Energy Corrections and Uncertainties
     double corrAK8PFchs     = 1;
     double corrUpAK8PFchs   = 1;

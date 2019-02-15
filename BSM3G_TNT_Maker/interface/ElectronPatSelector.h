@@ -123,6 +123,7 @@ class ElectronPatSelector : public  baseTree{
   bool   _tthlepVar;
   bool   _qglVar;
   bool   _is_data;
+  bool   _is_MC2016;
   /////
   //   BSM 
   /////

@@ -22,6 +22,7 @@ ElectronPatSelector::ElectronPatSelector(std::string name, TTree* tree, bool deb
   _tthlepVar           = iConfig.getParameter<bool>("tthlepVar");
   _qglVar              = iConfig.getParameter<bool>("qglVar");
   _is_data             = iConfig.getParameter<bool>("is_data");
+  _is_MC2016             = iConfig.getParameter<bool>("MC2016");
   SetBranches();
 }
 ElectronPatSelector::~ElectronPatSelector(){
@@ -143,20 +144,36 @@ void ElectronPatSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& 
     patElectron_mvaCategory_nonIso_.push_back(el->userInt("ElectronMVAEstimatorRun2Fall17NoIsoV2Categories"));
     patElectron_mvaValue_Iso_.push_back(el->userFloat("ElectronMVAEstimatorRun2Fall17IsoV2Values"));
     patElectron_mvaCategory_Iso_.push_back(el->userInt("ElectronMVAEstimatorRun2Fall17IsoV2Categories"));
-    passVetoOldId_.push_back  ( el->electronID("cutBasedElectronID-Fall17-94X-V1-veto"));
-    passLooseOldId_.push_back ( el->electronID("cutBasedElectronID-Fall17-94X-V1-loose"));
-    passMediumOldId_.push_back( el->electronID("cutBasedElectronID-Fall17-94X-V1-medium"));
-    passTightOldId_.push_back ( el->electronID("cutBasedElectronID-Fall17-94X-V1-tight"));
-    passMvaIsowp80OldId_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wp80") );
-    passMvanonIsowp80OldId_.push_back( el->electronID("mvaEleID-Fall17-noIso-V1-wp80") );
-    passMvaIsowp90OldId_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wp90") );
-    passMvanonIsowp90OldId_.push_back( el->electronID("mvaEleID-Fall17-noIso-V1-wp90") );
-    passMvaIsowpLooseOldId_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wpLoose") );
-    passMvanonIsowpLooseOldId_.push_back( el->electronID("mvaEleID-Fall17-noIso-V1-wpLoose") );
-    patElectron_OldmvaValue_nonIso_.push_back(el->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV1Values"));
-    patElectron_OldmvaCategory_nonIso_.push_back(el->userInt("ElectronMVAEstimatorRun2Fall17NoIsoV1Categories"));
-    patElectron_OldmvaValue_Iso_.push_back(el->userFloat("ElectronMVAEstimatorRun2Fall17IsoV1Values"));
-    patElectron_OldmvaCategory_Iso_.push_back(el->userInt("ElectronMVAEstimatorRun2Fall17IsoV1Categories"));
+    if(_is_MC2016){
+        passVetoOldId_.push_back  ( el->electronID("cutBasedElectronID-Summer16-80X-V1-veto"));
+        passLooseOldId_.push_back ( el->electronID("cutBasedElectronID-Summer16-80X-V1-loose"));
+        passMediumOldId_.push_back( el->electronID("cutBasedElectronID-Summer16-80X-V1-medium"));
+        passTightOldId_.push_back ( el->electronID("cutBasedElectronID-Summer16-80X-V1-tight"));
+        passMvaIsowp80OldId_.push_back( -999);
+        passMvanonIsowp80OldId_.push_back(el->electronID("mvaEleID-Spring16-GeneralPurpose-V1-wp80"));
+        passMvaIsowp90OldId_.push_back(-999);
+        passMvanonIsowp90OldId_.push_back(el->electronID("mvaEleID-Spring16-GeneralPurpose-V1-wp90"));
+        passMvaIsowpLooseOldId_.push_back( -999 );
+        passMvanonIsowpLooseOldId_.push_back( -999 );
+        patElectron_OldmvaValue_nonIso_.push_back(el->userFloat("ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Values"));
+        patElectron_OldmvaCategory_nonIso_.push_back(el->userInt("ElectronMVAEstimatorRun2Spring16GeneralPurposeV1Categories"));
+        patElectron_OldmvaValue_Iso_.push_back(-999);
+    }else{
+        passVetoOldId_.push_back  ( el->electronID("cutBasedElectronID-Fall17-94X-V1-veto"));
+        passLooseOldId_.push_back ( el->electronID("cutBasedElectronID-Fall17-94X-V1-loose"));
+        passMediumOldId_.push_back( el->electronID("cutBasedElectronID-Fall17-94X-V1-medium"));
+        passTightOldId_.push_back ( el->electronID("cutBasedElectronID-Fall17-94X-V1-tight"));
+        passMvaIsowp80OldId_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wp80") );
+        passMvanonIsowp80OldId_.push_back( el->electronID("mvaEleID-Fall17-noIso-V1-wp80") );
+        passMvaIsowp90OldId_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wp90") );
+        passMvanonIsowp90OldId_.push_back( el->electronID("mvaEleID-Fall17-noIso-V1-wp90") );
+        passMvaIsowpLooseOldId_.push_back( el->electronID("mvaEleID-Fall17-iso-V1-wpLoose") );
+        passMvanonIsowpLooseOldId_.push_back( el->electronID("mvaEleID-Fall17-noIso-V1-wpLoose") );
+        patElectron_OldmvaValue_nonIso_.push_back(el->userFloat("ElectronMVAEstimatorRun2Fall17NoIsoV1Values"));
+        patElectron_OldmvaCategory_nonIso_.push_back(el->userInt("ElectronMVAEstimatorRun2Fall17NoIsoV1Categories"));
+        patElectron_OldmvaValue_Iso_.push_back(el->userFloat("ElectronMVAEstimatorRun2Fall17IsoV1Values"));
+        patElectron_OldmvaCategory_Iso_.push_back(el->userInt("ElectronMVAEstimatorRun2Fall17IsoV1Categories"));
+    }
     passMvaHZZwpLooseId_.push_back( el->electronID("mvaEleID-Spring16-HZZ-V1-wpLoose") );
     patElectron_mvaValue_HZZ_.push_back(el->userFloat("ElectronMVAEstimatorRun2Spring16HZZV1Values"));
     patElectron_mvaCategory_HZZ_.push_back(el->userInt("ElectronMVAEstimatorRun2Spring16HZZV1Categories"));

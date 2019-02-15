@@ -26,7 +26,7 @@ scram b -j 8
 ## https://twiki.cern.ch/twiki/bin/view/CMS/EgammaMiniAODV2
 git cms-merge-topic cms-egamma:EgammaID_949 #if you want the FallV2 IDs, otherwise skip
 git cms-merge-topic cms-egamma:EgammaPostRecoTools_940 #just adds in an extra file to have a setup function to make things easier
-scram b -j 8  # for unknown reason, it may incur errors, in such case, 'scram b clean' and recompile it; please let me know if you understand the reason of errors.
+scram b -j 4  
          
 
 ## set up MET corrections with EE nosie fix
@@ -53,9 +53,11 @@ scram b -j 8
 
 ## To Run ##
 cd BSMFramework/BSM3G_TNT_Maker/python/
-cmsRun miniAOD_MC(RD)2017.py 
+cmsRun miniAOD_MC(RD)2017(2016)(All).py 
 
 ## To Submit Crab jobs ###
 cd BSMFramework/BSM3G_TNT_Maker/crab/
-python multicrab_MC(DATA).py
+python multicrab_MC(DATA)(All).py
 
+## To Do ###
+JER and HLT may needs update in the future

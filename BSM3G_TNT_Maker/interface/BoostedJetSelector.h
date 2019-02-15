@@ -101,7 +101,6 @@ class BoostedJetSelector : public  baseTree{
   std::string jerAK8PFPuppiSF_;
   edm::FileInPath PuppiWeightFilePath_;
   bool _is_data;
-  bool _MC2016;
   /////
   //   JEC
   /////

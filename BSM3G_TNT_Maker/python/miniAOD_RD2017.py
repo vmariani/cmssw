@@ -494,7 +494,7 @@ for mod in process.filters_().itervalues():
 #####
 process.p = cms.Path(
 process.ecalBadCalibReducedMINIAODFilter*
-process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
+#process.patJetCorrFactorsUpdatedJEC * process.updatedPatJetsUpdatedJEC *
 process.prefiringweight *
 #process.egmPhotonIDSequence *
 #process.egammaScaleSmearAndVIDSeq *
