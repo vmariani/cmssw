@@ -34,14 +34,11 @@ if __name__ == '__main__':
 # TTZ
 'Fall17V2_TTZ_M1to10',
 'Fall17V2_TTZ_M10',
-'Fall17V2_TTTo2L',
-'Fall17V2_TTToSemiLep',
-'Fall17V2_TTToHad',
 #Conv
-'Fall17V2_TTGJets', #10
+'Fall17V2_TTGJets', 
 'Fall17V2_TGJetsLep',
 'Fall17V2_W1JetsToLNu',
-'Fall17V2_W2JetsToLNu',
+'Fall17V2_W2JetsToLNu',#10
 'Fall17V2_W3JetsToLNu',
 'Fall17V2_W4JetsToLNu',
 'Fall17V2_DYJets_M10to50',
@@ -49,33 +46,40 @@ if __name__ == '__main__':
 'Fall17V2_DYJets_M50',
 #EWK
 'Fall17V2_WZTo3LNu',
-'Fall17V2_ZZTo4L', #20
+'Fall17V2_ZZTo4L', 
 'Fall17V2_ZZ_ext_To4L', 
 #Rares
 'Fall17V2_WW_DS',
-'Fall17V2_WWW',
+'Fall17V2_WWW',#20
 'Fall17V2_WWZ',
 'Fall17V2_WZZ',
 'Fall17V2_ZZZ',
 'Fall17V2_TTTT',
 'Fall17V2_tWll',
 'Fall17V2_tZq',
-'Fall17V2_WpWpJJ',#30
+'Fall17V2_WpWpJJ',
 'Fall17V2_TTTW', 
 'Fall17V2_TTWH',
-'Fall17V2_GGHToZZ4L',
+'Fall17V2_GGHToZZ4L',#30
 'Fall17V2_GGH_ext_ToZZ4L',
 'Fall17V2_VHToNonbb',
 
 #####  new samples for MVA samples 2018 1102 #######
-'Fall17V2_ttZ_Tune',
-'Fall17V2_ttZ_ext_Tune',
-'Fall17V2_ttHnobb',
-'Fall17V2_ttWJets',
-'Fall17V2_ttW_ext_Jets', #40
+'Fall17V2_ttHnobb_v1',
+'Fall17V2_ttHnobb_extv1',
+'Fall17V2_ttZ_Tune_v1',
+'Fall17V2_ttZ_Tune_extv3',
+'Fall17V2_ttWJets_v1',
+'Fall17V2_ttWJets_extv2',
+'Fall17V2_TTTo2L_v1', 
+'Fall17V2_TTTo2L_PSv1', #40
+'Fall17V2_TTToSemiLep_v2',
+'Fall17V2_TTToSemiLep_PSv2',
+'Fall17V2_TTToHad_v1', 
+'Fall17V2_TTToHad_PSv1',
 
 ##### 2016 ###############
-"Summer16V1_ttHnobb", #41
+"Summer16V1_ttHnobb_v2", #45
                  ]
  datasetinputs = [
 #####################  2017 #######################
@@ -84,16 +88,13 @@ if __name__ == '__main__':
 # prompt background
 # TH
 "/THQ_ctcvcp_4f_Hincl_13TeV_madgraph_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM",
-"/THW_ctcvcp_5f_Hincl_13TeV_madgraph_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM ",
+"/THW_ctcvcp_5f_Hincl_13TeV_madgraph_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM",
 # TTW
-'/TTWJetsToLNu_TuneCP5_PSweights_13TeV-amcatnloFXFX-madspin-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1/MINIAODSIM ',
+'/TTWJetsToLNu_TuneCP5_PSweights_13TeV-amcatnloFXFX-madspin-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1/MINIAODSIM',
 '/TTWW_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14_ext1-v1/MINIAODSIM',
 # TTZ
 '/TTZToLL_M-1to10_TuneCP5_13TeV-amcatnlo-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/MINIAODSIM',
 '/TTZToLLNuNu_M-10_TuneCP5_13TeV-amcatnlo-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM',
-'/TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v2/MINIAODSIM',
-'/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/MINIAODSIM',
-'/TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1/MINIAODSIM',
 #Conv
 '/TTGJets_TuneCP5_13TeV-amcatnloFXFX-madspin-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_new_pmx_94X_mc2017_realistic_v14-v1/MINIAODSIM',
 '/TGJets_leptonDecays_TuneCP5_PSweights_13TeV-amcatnlo-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM',
@@ -125,20 +126,27 @@ if __name__ == '__main__':
 '/VHToNonbb_M125_13TeV_amcatnloFXFX_madspin_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/MINIAODSIM',
 
 ###################### Samples for MVA ##################
+'/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM',
+'/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v2/MINIAODSIM',
 '/ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM',
 '/ttZJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v3/MINIAODSIM',
-'/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM',
 '/ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM',
 '/ttWJets_TuneCP5_13TeV_madgraphMLM_pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v2/MINIAODSIM',
+'/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/MINIAODSIM',
+'/TTTo2L2Nu_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM',
+'/TTToSemiLeptonic_TuneCP5_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/MINIAODSIM',
+'/TTToSemiLeptonic_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/MINIAODSIM',
+'/TTToHadronic_TuneCP5_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM',
+'/TTToHadronic_TuneCP5_PSweights_13TeV-powheg-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM',
 
 #####################  2016 #######################
 ######### Samples for MVA ###############
 '/ttHToNonbb_M125_TuneCUETP8M2_ttHtranche3_13TeV-powheg-pythia8/RunIISummer16MiniAODv3-PUMoriond17_94X_mcRun2_asymptotic_v3-v2/MINIAODSIM',
                 ]
 
-#for d in range(36,len(datasetnames)):
-#for d in range(0,38):
-for d in [6,41]:
+for d in range(0,len(datasetnames)):
+#for d in range(0,52):
+#for d in [6,41]:
     print 'multicrab.py: Running datasetname: ', datasetnames[d]
 
     DataEra = '' 

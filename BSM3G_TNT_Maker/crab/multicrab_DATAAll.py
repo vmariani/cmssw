@@ -323,7 +323,7 @@ goodRunsLists = [
 
 #for d in range(0,len(datasetnames)):
 #for d in range(10,len(datasetnames)):
-#for d in range(0,10):
+for d in range(0,15):
 #for d in [0]:
 for d in [0,30]:
     print 'multicrab.py: Running datasetname: ', datasetnames[d]
