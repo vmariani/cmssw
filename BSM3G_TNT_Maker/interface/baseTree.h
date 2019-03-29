@@ -14,7 +14,8 @@ typedef edm::ParameterSet pset;
 class baseTree{
  public:
   baseTree(std::string identifier, TTree* tree, bool debug);
-  ~baseTree(){delete tree_;};
+//  ~baseTree(){delete tree_;};
+  virtual ~baseTree(){delete tree_;};
  protected:
   baseTree(){}
   std::string identifier_; //eg. "pat"/"reco"

@@ -9,9 +9,9 @@ EventInfoSelector::EventInfoSelector(std::string name, TTree* tree, bool debug, 
   fixedGridRhoFastjetCentralHandle_  = ic.consumes<double>(edm::InputTag("fixedGridRhoFastjetCentral"));
   fixedGridRhoFastjetCentralChargedPileUpHandle_  = ic.consumes<double>(edm::InputTag("fixedGridRhoFastjetCentralChargedPileUp"));
   fixedGridRhoFastjetCentralNeutralHandle_  = ic.consumes<double>(edm::InputTag("fixedGridRhoFastjetCentralNeutral"));
-  prefweight_token = ic.consumes< double >(edm::InputTag("prefiringweight:NonPrefiringProb"));
-  prefweightup_token = ic.consumes< double >(edm::InputTag("prefiringweight:NonPrefiringProbUp"));
-  prefweightdown_token = ic.consumes< double >(edm::InputTag("prefiringweight:NonPrefiringProbDown"));
+//  prefweight_token = ic.consumes< double >(edm::InputTag("prefiringweight:NonPrefiringProb"));
+//  prefweightup_token = ic.consumes< double >(edm::InputTag("prefiringweight:NonPrefiringProbUp"));
+//  prefweightdown_token = ic.consumes< double >(edm::InputTag("prefiringweight:NonPrefiringProbDown"));
   metFilterBits_ = ic.consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("metFilterBits"));
   ecalBadCalibFilterUpdate_token= ic.consumes< bool >(edm::InputTag("ecalBadCalibReducedMINIAODFilter"));
   _is_data = iConfig.getParameter<bool>("is_data");
@@ -180,7 +180,7 @@ void EventInfoSelector::Fill(const edm::Event& iEvent){
   EVENT_fixedGridRhoFastjetCentralNeutral = fixedGridRhoFastjetCentralNeutral;
 
   // L1 prefire
-  edm::Handle< double > theprefweight;
+/*  edm::Handle< double > theprefweight;
   iEvent.getByToken(prefweight_token, theprefweight ) ;
   double _prefiringweight =(*theprefweight);
   EVENT_prefireWeight_ = _prefiringweight;
@@ -194,7 +194,7 @@ void EventInfoSelector::Fill(const edm::Event& iEvent){
   iEvent.getByToken(prefweightdown_token, theprefweightdown ) ;
   double _prefiringweightdown =(*theprefweightdown);
   EVENT_prefireWeightDown_ = _prefiringweightdown;
-
+*/
   //Event filters
   edm::Handle<edm::TriggerResults> metFilterBits;
   iEvent.getByToken(metFilterBits_, metFilterBits);
@@ -249,9 +249,10 @@ void EventInfoSelector::SetBranches(){
   AddBranch(&EVENT_fixedGridRhoFastjetCentralChargedPileUp  ,"EVENT_fixedGridRhoFastjetCentralChargedPileUp");
   AddBranch(&EVENT_fixedGridRhoFastjetCentralNeutral        ,"EVENT_fixedGridRhoFastjetCentralNeutral");
   //L1 Prefire
-  AddBranch(&EVENT_prefireWeight_     ,"EVENT_prefireWeight");
+/*  AddBranch(&EVENT_prefireWeight_     ,"EVENT_prefireWeight");
   AddBranch(&EVENT_prefireWeightUp_     ,"EVENT_prefireWeightUp");
   AddBranch(&EVENT_prefireWeightDown_     ,"EVENT_prefireWeightDown");
+*/
   //Event filters
   AddBranch(&Flag_HBHENoiseFilter                    ,"Flag_HBHENoiseFilter");
   AddBranch(&Flag_HBHENoiseIsoFilter                 ,"Flag_HBHENoiseIsoFilter");
@@ -300,10 +301,10 @@ void EventInfoSelector::Initialise(){
   EVENT_fixedGridRhoFastjetCentralChargedPileUp = -9999; 
   EVENT_fixedGridRhoFastjetCentralNeutral       = -9999;
   // L1 Prefire
-  EVENT_prefireWeight_ = -9999;
+/*  EVENT_prefireWeight_ = -9999;
   EVENT_prefireWeightUp_ = -9999;
   EVENT_prefireWeightDown_ = -9999;
-  //Event filters
+*/  //Event filters
   Flag_HBHENoiseFilter                    = -9999;
   Flag_HBHENoiseIsoFilter                 = -9999;
   Flag_CSCTightHaloFilter                 = -9999;

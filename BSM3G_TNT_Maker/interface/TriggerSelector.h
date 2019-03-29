@@ -13,7 +13,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
-#include "HLTrigger/Muon/interface/HLTMuonIsoFilter.h"
+//#include "HLTrigger/Muon/interface/HLTMuonIsoFilter.h"
 #include "DataFormats/HLTReco/interface/TriggerFilterObjectWithRefs.h"
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "FWCore/Common/interface/TriggerResultsByName.h"
@@ -86,6 +86,8 @@ class TriggerSelector : public baseTree{
   int HLT_IsoTkMu22_eta2p1;
   int HLT_Mu50;
   int HLT_TkMu50;
+  int HLT_OldMu100;
+  int HLT_TkMu100;
   int HLT_DoubleMu33NoFiltersNoVtx;
   int HLT_DoubleMu23NoFiltersNoVtxDisplaced;
   int HLT_Mu30_TkMu11;
