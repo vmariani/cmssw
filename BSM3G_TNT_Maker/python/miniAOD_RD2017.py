@@ -144,7 +144,8 @@ process.load('Configuration.StandardSequences.Services_cff')
 process.source = cms.Source("PoolSource",
   fileNames = cms.untracked.vstring(
     #'/store/data/Run2017B/SingleMuon/MINIAOD/17Nov2017-v1/40000/0021369B-9BD8-E711-BFE9-FA163EAA42CB.root'
-    '/store/data/Run2017B/SingleMuon/MINIAOD/31Mar2018-v1/100000/005EF8EB-6338-E811-B31C-0025905A6066.root',
+  #  '/store/data/Run2017B/SingleMuon/MINIAOD/31Mar2018-v1/100000/005EF8EB-6338-E811-B31C-0025905A6066.root',
+     '/store/data/Run2017F/SingleElectron/MINIAOD/31Mar2018-v1/010000/72A98F53-E53B-E811-8945-0CC47A4C8E2E.root '
   ),
   skipEvents = cms.untracked.uint32(0)
 )

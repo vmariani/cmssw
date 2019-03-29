@@ -86,6 +86,8 @@ class TriggerSelector : public baseTree{
   int HLT_IsoTkMu22_eta2p1;
   int HLT_Mu50;
   int HLT_TkMu50;
+  int HLT_OldMu100;
+  int HLT_TkMu100;
   int HLT_DoubleMu33NoFiltersNoVtx;
   int HLT_DoubleMu23NoFiltersNoVtxDisplaced;
   int HLT_Mu30_TkMu11;

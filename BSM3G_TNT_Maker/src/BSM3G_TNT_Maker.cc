@@ -110,6 +110,15 @@ void BSM3G_TNT_Maker::analyze(const edm::Event& iEvent, const edm::EventSetup& i
     bjetnesssel_filter = 0;
     if(_fillBJetnessinfo)      BJetnessselector->Fill(iEvent, iSetup, bjetnesssel_filter);
     if((bjetnessselfilter && bjetnesssel_filter==1) || !bjetnessselfilter){
+
+    edm::Handle<edm::TriggerResults> triggerBits;
+    iEvent.getByToken(triggerBits_, triggerBits);
+    const edm::TriggerNames &trigNames = iEvent.triggerNames(*triggerBits);
+    for(uint tb = 0; tb<triggerBits->size(); tb++){
+        if(strstr(trigNames.triggerName(tb).c_str(),"HLT_OldMu100_v3") && triggerBits->accept(tb)){
+          printf("%s", trigNames.triggerName(tb).c_str() );
+        } 
+    }
       //cout<<"bjetnesssel_filter aft "<<bjetnesssel_filter<<endl;
       if(_fillBJetnessFVinfo)    BJetnessFVselector->Fill(iEvent, iSetup);
       if(_fillgeninfo)           genselector->Fill(iEvent); 

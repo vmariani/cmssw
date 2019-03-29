@@ -4,7 +4,7 @@ import FWCore.ParameterSet.Config as cms
 #####
 process = cms.Process("Demo")
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.FwkReport.reportEvery = 10000
+process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 process.load('Configuration.Geometry.GeometryRecoDB_cff')
 process.load("TrackingTools/TransientTrack/TransientTrackBuilder_cfi")
 process.load("Configuration.StandardSequences.MagneticField_38T_cff")
@@ -20,11 +20,21 @@ process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 #####
 process.source = cms.Source("PoolSource",
   fileNames = cms.untracked.vstring(
-    '/store/mc/RunIIFall17MiniAODv2/ttHToNonbb_M125_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/40000/062342A0-5942-E811-826C-002590D9D8D4.root',
+'/store/user/mpresill/mu_L4_M2000/mu_L4_M2000_step4/170716_101900/0000/ele_L4_M500-miniAODSIM_99.root '
+# '/store/mc/RunIIFall17MiniAODv2/WJetsToLNu_HT-600To800_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/20000/C20A6BE7-C94F-E811-A21B-F01FAFE13F0F.root'
+ #  '/store/mc/RunIIFall17MiniAODv2/TTTo2L2Nu_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/00000/523E450B-CB41-E811-AACA-001E6739B849.root'
+  # '/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-amcatnloFXFX-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v1/90000/FEFADA2F-8C44-E811-914F-B496910A8618.root' 
+# '/store/mc/RunIIFall17MiniAODv2/DYJetsToLL_M-50_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/PU2017RECOSIMstep_12Apr2018_94X_mc2017_realistic_v14-v1/910000/ECC11159-F647-E811-A157-001E67792510.root'
+  # '/store/mc/RunIIFall17MiniAODv2/WJetsToLNu_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14_ext1-v2/20000/B2EFE9BF-0150-E811-8E6C-008CFA111348.root'
+ #'/store/mc/RunIIFall17MiniAODv2/WJetsToLNu_HT-100To200_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v2/00000/0411B7E1-057B-E811-8091-001E6757E05C.root'
+# '/store/mc/RunIIFall17MiniAODv2/ZZ_TuneCP5_13TeV-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/70000/FE2F3D1C-3842-E811-BE71-0CC47A4D76AA.root' 
+# '/store/mc/RunIIFall17MiniAODv2/ZZ_TuneCP5_13TeV-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/10000/0CCF4FF5-C741-E811-B034-0CC47A5FA3B9.root'
+# '/store/mc/RunIIFall17MiniAODv2/ZZ_TuneCP5_13TeV-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/90000/F269998D-2342-E811-8520-008CFAC93F08.root'
+ # '/store/mc/RunIIFall17MiniAODv2/ST_tW_top_5f_inclusiveDecays_TuneCP5_13TeV-powheg-pythia8/MINIAODSIM/PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/90000/F6E16E17-3343-E811-816D-0025905C2CBE.root'
   ),
   skipEvents = cms.untracked.uint32(0)
 )
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 
 ##### JEC
@@ -138,8 +148,10 @@ process.puppi.useExistingWeights = False
 #####
 ##   Output file
 #####
+#options.ofName += ".root"
 process.TFileService = cms.Service("TFileService",
-  fileName = cms.string("OutTree.root")
+  fileName = cms.string("WJetsHT800To1200.root")
+ # fileName = cms.string(options.ofName)
 )
 
 #####
@@ -152,10 +164,12 @@ process.TNT = cms.EDAnalyzer("BSM3G_TNT_Maker",
   maxtriggerversion = cms.double(20), # please leave it as a double
   evtriggers        = cms.vstring(
      #'HLT_Ele115_CaloIdVT_GsfTrkIdT_v',
+     'HLT_Ele27_eta2p1_WPLoose_Gsf_v', 
      'HLT_DoubleEle33_CaloIdL_MW_v',
      #'HLT_DoubleEle33_CaloIdL_GsfTrkIdVL_MW_v',
      #'HLT_IsoMu24_v',
      #'HLT_IsoTkMu24_v',
+     'HLT_OldMu100_v', 
      'HLT_Mu50_v',
      'HLT_TkMu50_v',
      'HLT_Mu30_TkMu11_v',

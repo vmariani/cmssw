@@ -82,6 +82,10 @@ void TriggerSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& iSet
       if(HLT_IsoTkMu22_eta2p1_v<triggerBits->size()) HLT_IsoTkMu22_eta2p1 = triggerBits->accept(HLT_IsoTkMu22_eta2p1_v);
       uint HLT_Mu50_v(trigNames.triggerIndex(("HLT_Mu50_v"+string(buffer)).c_str()));
       if(HLT_Mu50_v<triggerBits->size()) HLT_Mu50 = triggerBits->accept(HLT_Mu50_v);
+      uint HLT_OldMu100_v(trigNames.triggerIndex(("HLT_OldMu100_v"+string(buffer)).c_str()));
+      if(HLT_OldMu100_v<triggerBits->size()) HLT_OldMu100 = triggerBits->accept(HLT_OldMu100_v);
+      uint HLT_TkMu100_v(trigNames.triggerIndex(("HLT_TkMu100_v"+string(buffer)).c_str()));
+      if(HLT_TkMu100_v<triggerBits->size()) HLT_TkMu100 = triggerBits->accept(HLT_TkMu100_v);
       uint HLT_TkMu50_v(trigNames.triggerIndex(("HLT_TkMu50_v"+string(buffer)).c_str()));
       if(HLT_TkMu50_v<triggerBits->size()) HLT_TkMu50 = triggerBits->accept(HLT_TkMu50_v);
       uint HLT_DoubleMu33NoFiltersNoVtx_v(trigNames.triggerIndex(("HLT_DoubleMu33NoFiltersNoVtx_v"+string(buffer)).c_str()));
@@ -143,6 +147,8 @@ void TriggerSelector::Fill(const edm::Event& iEvent, const edm::EventSetup& iSet
     HLT_IsoTkMu22_eta2p1 = 1;
     HLT_Mu50 = 1;
     HLT_TkMu50 = 1;
+    HLT_OldMu100 = 1;
+    HLT_TkMu100 = 1;
     HLT_DoubleMu33NoFiltersNoVtx = 1;
     HLT_DoubleMu23NoFiltersNoVtxDisplaced = 1;
     HLT_Mu30_TkMu11 = 1;
@@ -193,6 +199,8 @@ void TriggerSelector::SetBranches(){
   AddBranch(&HLT_IsoTkMu22_eta2p1		      ,"HLT_IsoTkMu22_eta2p1");
   AddBranch(&HLT_Mu50				      ,"HLT_Mu50");
   AddBranch(&HLT_TkMu50				      ,"HLT_TkMu50");
+  AddBranch(&HLT_OldMu100                     ,"HLT_OldMu100");
+  AddBranch(&HLT_TkMu100                   ,"HLT_TkMu100");
   AddBranch(&HLT_DoubleMu33NoFiltersNoVtx	      ,"HLT_DoubleMu33NoFiltersNoVtx");
   AddBranch(&HLT_DoubleMu23NoFiltersNoVtxDisplaced    ,"HLT_DoubleMu23NoFiltersNoVtxDisplaced");
   AddBranch(&HLT_Mu30_TkMu11			      ,"HLT_Mu30_TkMu11");
@@ -242,6 +250,8 @@ void TriggerSelector::Clear(){
   HLT_IsoTkMu22_eta2p1 = -9999;
   HLT_Mu50 = -9999;
   HLT_TkMu50 = -9999;
+  HLT_OldMu100 = -9999;
+  HLT_TkMu100 = -9999;
   HLT_DoubleMu33NoFiltersNoVtx = -9999;
   HLT_DoubleMu23NoFiltersNoVtxDisplaced = -9999;
   HLT_Mu30_TkMu11 = -9999;

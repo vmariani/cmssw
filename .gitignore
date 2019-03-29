@@ -1,0 +1,17 @@
+*.root
+.__afs*
+*.pyc
+*.txt
+*.err
+*.log
+*.so
+*.d
+BSM3G_TNT_Maker/crab/*
+BSM3G_TNT_Maker/src/DSpiu_tree.cc
+BSM3G_TNT_Maker/python/jobs/jobs_test/*
+BSM3G_TNT_Maker/python/jobs/resubmit_jobs_test/*
+*.swp
+*.png
+BSM3G_TNT_Maker/python/jobs/Immagini/*
+BSM3G_TNT_Maker/python/crab_projects_skim/*
+BSM3G_TNT_Maker/python/Immagini/*
